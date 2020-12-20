@@ -1,0 +1,19 @@
+h2 {
+    font-size: 24px;
+}
+
+/* making id has traget element*/
+#content-header {
+    font-size: 18px;
+    color: red;
+}
+
+span {
+    display: block;
+    color: blue;
+}
+
+/* making class has traget element*/
+.deck {
+    color: red;
+}

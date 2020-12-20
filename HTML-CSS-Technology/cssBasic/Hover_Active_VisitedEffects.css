@@ -1,0 +1,16 @@
+/*when hovered on the link color change*/
+a:hover {
+    color: red;
+}
+/*when active (clicked) on the link color change*/
+a[title ="google.com"]:active {
+    color: brown;
+}
+/*when link is visited on the link color change*/
+a:visited {
+    color: green;
+}
+
+a:active{
+    color: brown;
+}

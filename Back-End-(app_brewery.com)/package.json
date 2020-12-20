@@ -1,0 +1,16 @@
+{
+  "name": "Back-End-(app_brewery.com)",
+  "version": "1.0.0",
+  "description": "- Nodejs\r - Expressjs\r - APIS (RESTful API)\r - EJS\r - SQL (MySQL)\r - NOSQL (MongoDB, Mongoose)\r - Authentication & Security",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.4"
+  }
+}

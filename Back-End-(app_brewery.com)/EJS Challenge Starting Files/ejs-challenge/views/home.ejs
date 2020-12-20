@@ -1,0 +1,13 @@
+<%- include("./partials/header.ejs")  -%>
+
+<%Post.forEach(element => {%>
+<% var lenght = 100; %>
+<% var textValue = element.paraArea%>
+<% var mySort = textValue.substring(0,lenght)%>
+<h1><%=element.textArea%></h1>
+<p><%=mySort + "...."%>
+    <a href="/posts/<%= element.textArea %> ">Read More</a>
+</p>
+<%});%>
+
+<%- include("./partials/footer.ejs")  -%>

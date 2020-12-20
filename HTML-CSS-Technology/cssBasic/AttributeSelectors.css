@@ -1,0 +1,25 @@
+/* makes all non deck attribute pink */
+span[class ~="deck"]{
+    color: pink;
+}
+
+span[class ="deck"]{
+    color: purple;
+}
+
+div[id]{
+    background: grey;
+}
+
+a[title ="Amazom.com"]{
+    color: red;
+}
+/*making the href has are reference to style theme by ending letters*/
+a[href$="pdf"]{
+    color: green;
+}
+
+/*making the href has are reference to style theme by starting letters*/
+a[href^="loveletter"]{
+    color: blue;
+}

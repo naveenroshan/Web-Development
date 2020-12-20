@@ -1,0 +1,6 @@
+/*selecting all the tags in the html */
+* {
+    margin: 100;
+    padding: 90;
+    color: red;
+}

@@ -1,0 +1,41 @@
+/*this font value is absalute type*/
+article{
+    font-size: 16px;
+}
+/*this font value is relative type*/
+article h2{
+    font-size: 3em;
+}
+
+/*this font value is relative type*/
+article p{
+    font-size: 100%;
+}
+
+/*giving font a style and font family*/
+article h2, article p{
+    font-family: Arial, serif;
+    font-style: italic;
+    color: rebeccapurple;
+}
+
+h1{
+    font-weight: bolder;
+}
+
+p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 300;
+}
+
+/*Letter Spacing & Line Height*/
+p{
+    letter-spacing: 4px;
+    word-spacing: 12px;
+    line-height: 17px;
+}
+
+/*Paragraph Spacing*/
+p{
+    margin-bottom: 21px;
+}

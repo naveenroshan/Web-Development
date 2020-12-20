@@ -1,0 +1,20 @@
+create exericse: 
+http://localhost:5000/exercises/add
+
+get exericse : 
+http://localhost:5000/
+
+get and delete exericse by id:
+http://localhost:5000/:id
+
+update exericse by id:
+http://localhost:5000/update/:id
+===================================== 
+create user:
+http://localhost:5000/users/add
+
+get user :
+http://localhost:5000/
+
+
+

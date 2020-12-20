@@ -1,0 +1,38 @@
+/*giving the default link text underlink to none*/
+a{
+    text-decoration: none;
+}
+
+h1, h2{
+    text-decoration: overline;
+}
+
+#header p{
+    text-transform: capitalize;
+}
+
+ul > li{
+    text-transform: uppercase;
+}
+
+#header h1{
+    color: chocolate;
+}
+
+/*giving background has image to the texts*/
+div{
+    background: url("../image/download.jpeg");
+    background-repeat: repeat-y;
+}
+
+/*Styling Links*/
+a{
+    color: chartreuse;
+    font-weight: bold;
+    text-decoration: underline;
+}
+a:hover{
+    color: black;
+    text-decoration: none;
+    background-color: aliceblue;
+}

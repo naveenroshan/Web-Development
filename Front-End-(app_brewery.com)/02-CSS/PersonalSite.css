@@ -1,0 +1,49 @@
+
+/* tag selecter type */
+body {
+    background-color: #DDDDDD;
+}
+
+hr {
+    border-style: none;
+    border-top-style: dotted;
+    border-color: rgb(92, 92, 92);
+    border-width: 6px;
+    width: 7%;
+}
+h1,h2,h3{
+    color: #4961ee;    
+}
+
+
+/* class selecter type */
+.html
+{
+    display: block;
+    margin: auto;
+    height: 200px;
+    width: 600px;
+    border-radius: 10%  ;
+}
+    
+.cake{
+    background-color:yellow;
+    margin: auto;
+    display: block;
+    border-radius: 10%;
+}
+
+/* id selecter type */
+#name{
+    color: rgb(236, 136, 43);
+}
+
+/* Pseudo-classes type */
+
+img:hover{
+    transform: scale(1.5);
+}
+
+a:hover{
+    color: #d41919;
+}

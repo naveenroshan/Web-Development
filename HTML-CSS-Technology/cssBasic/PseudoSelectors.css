@@ -1,0 +1,9 @@
+/*using a pseudo Selectors methods to style a link tab by hovering on it change color*/
+a:hover{
+    color: red;
+}
+
+/* making all div element to change color on hover*/
+.all-articles:hover{
+    background: red;
+}

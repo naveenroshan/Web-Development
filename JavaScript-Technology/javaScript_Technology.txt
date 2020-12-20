@@ -1,0 +1,18 @@
+Top technology basied on javaScript:
+
+>node JS: 
+a web framwork of javaScript
+>express JS:
+is a web application framework for Node.js,Build top of the node JS
+>React js:
+is a JavaScript library[3] for building user interfaces
+>NPN : 
+is a Node package manager
+>Socket.IO :
+is a JavaScript library for realtime web applications,It enables realtime, bi-directional communication between web clients and servers.
+>Webpack:
+ is an open-source JavaScript module bundler.[2][3][4][5] Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset.
+>bootstrap:
+is a free and open-source front-end framework for developing websites and web applications. It contains HTML and CSS-based design templates for typography, forms, buttons, navigation and other interface components, as well as optional JavaScript extensions.
+React Native:
+React Native lets you build mobile apps using only JavaScript. It uses the same design as React, letting you compose a rich mobile UI using declarative components.

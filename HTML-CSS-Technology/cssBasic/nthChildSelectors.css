@@ -1,0 +1,19 @@
+li:nth-child(1){
+    font-weight: bold;
+}
+
+li:nth-child(7){
+    font-weight: bold;
+}
+
+li:nth-child(even){
+    background: grey;
+}
+
+li:nth-child(odd){
+    background: rgb(89, 89, 163);
+}
+
+li:nth-child(2n +1){
+    background: white;
+}

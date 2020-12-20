@@ -1,0 +1,19 @@
+/* were are styling the header part */
+#header {
+    position: absolute;
+    top: 0;
+    left: 0%;
+}
+
+/*we are styling the head h1 */
+#header h1 {
+    font-size: 32px;
+    left: 50%;
+    color: blue;
+}
+
+/*we are styling the paragraphy */
+p {
+    font-size: 12px;
+    color: slateblue;
+}
