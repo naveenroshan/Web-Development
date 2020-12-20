@@ -7,5 +7,5 @@ This repo contain all the web Technologies:
 - CSS
 - JavaScript
 - bootstrap
-- react js
-- node js
+- react-js
+- node-js
