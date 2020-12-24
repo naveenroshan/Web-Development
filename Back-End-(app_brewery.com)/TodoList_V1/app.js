@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const ejs = require('ejs');
 const date = require(__dirname + "/date.js");
 const mongoose = require('mongoose');
+const _ = require("lodash");
 //tell the app to use EJS
 app.set("view engine", "ejs");
 
@@ -55,8 +56,6 @@ const listSchema = {
 
 //custom list model
 const customList = mongoose.model("customList", listSchema);
-
-
 
 //getting new item from the html input tag
 app.get("/", function(req, res) {
@@ -117,20 +116,44 @@ app.post("/post", function(req, res) {
 //delete method
 app.post("/delete", function(req, res) {
   //getting the item id to delete
-  const checkedItemId = req.body.delectCheck
-  Item.findByIdAndRemove(checkedItemId, function(err) {
-    if (!err) {
-      console.log("success of delection");
-      res.redirect("/");
-    } else {
-      console.log(err);
-    }
-  });
+  const checkedItemId = req.body.delectCheck;
+  const listName = req.body.listName;
+
+  if (listName === "HomeList") {
+    //finding the item using the id we got form the checkedItemId variable.
+    Item.findByIdAndRemove(checkedItemId, function(err) {
+      if (!err) {
+        console.log("success of delection");
+        res.redirect("/");
+      } else {
+        console.log(err);
+      }
+    });
+  } else {
+    //getting the item from the custom item array based on the id from the listName variable
+    customList.findOneAndUpdate({
+      name: listName
+    }, {
+      //mongoose remove document from a array
+      //$pull opertor remove from an existing array instances of a value that matches a condition
+      $pull: {
+        items: {
+          _id: checkedItemId
+        }
+      }
+    }, function(err, foundList) {
+      if (!err) {
+        res.redirect("/" + listName);
+      }
+    })
+  }
 });
 
 //creating custom parameter url
 app.get("/:customListName", function(req, res) {
-  const customListName = req.params.customListName;
+  //using the lodash package for the customlis to be capitalized
+  const customListName = _.capitalize(req.params.customListName);
+
   customList.findOne({
     name: customListName
   }, function(err, foundList) {

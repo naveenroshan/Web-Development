@@ -13,6 +13,7 @@
       <!--there we will have to newly created list-->
       <p><%=item.name %></p>
     </div>
+    <input type="hidden" name="listName" value="<%= listTitle %>"></input>
   </form>
   <% }) %>
   <form class="item" action="/post" method="POST">
