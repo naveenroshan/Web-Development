@@ -10,7 +10,7 @@ app.set("view engine", "ejs");
 
 //setting the lister to work in server and local
 app.listen(process.env.PORT || 3000, function() {
-  console.log("server is running")
+  console.log("server is running in heroku")
 });
 
 //making body parser avaliable to use in the code
