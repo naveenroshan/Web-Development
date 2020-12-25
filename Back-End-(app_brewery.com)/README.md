@@ -8,6 +8,14 @@
 - NOSQL (MongoDB, Mongoose)
 - Authentication & Security
 
-- Newletter_signup project is live hosted in heroku https://blooming-meadow-69755.herokuapp.com/
+- Also hosted the built app in the heroku app server and MongoDB Atlas db server,
 
-- Newletter_signup project is on mailchimp https://us2.admin.mailchimp.com/
+  Newletter_signup project
+    heroku https://blooming-meadow-69755.herokuapp.com/
+
+  Newletter_signup project
+    mailchimp https://us2.admin.mailchimp.com/
+
+  Todo List project hosted in:
+    heroku -
+    MongoDB Atlas - https://cloud.mongodb.com/v2/5ec9f0eb37e9c85c1d39de7f#clusters

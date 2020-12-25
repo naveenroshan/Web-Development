@@ -21,12 +21,20 @@ app.use(bodyParser.urlencoded({
 //css file avalible in the local host and server
 app.use(express.static("public"));
 
-//db connection
-mongoose.connect("mongodb://localhost:27017/todoListDB", {
+//db connection local url
+// mongoose.connect("mongodb://localhost:27017/todoListDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false
+// });
+
+//connection to online MongoDB Atlas
+mongoose.connect("mongodb+srv://mikejack:Rooster@2193@cluster0.x5ui6.mongodb.net/todoListDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
 });
+
 
 //creating a schema
 const ItemsSchema = new mongoose.Schema({
