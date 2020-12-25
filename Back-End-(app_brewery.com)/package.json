@@ -9,6 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines":{
+    "node":"v12.13.1"
+  },
   "dependencies": {
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.4"

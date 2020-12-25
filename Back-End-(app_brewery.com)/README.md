@@ -17,5 +17,5 @@
     mailchimp https://us2.admin.mailchimp.com/
 
   Todo List project hosted in:
-    heroku 
+    heroku https://mighty-dawn-40240.herokuapp.com/
     MongoDB Atlas https://cloud.mongodb.com/v2/5ec9f0eb37e9c85c1d39de7f#clusters
