@@ -9,8 +9,12 @@ const _ = require("lodash");
 app.set("view engine", "ejs");
 
 //setting the lister to work in server and local
-app.listen(process.env.PORT || 3000, function() {
-  console.log("server is running in heroku")
+let port = process.env.PORT;
+if(port == null || port == ""){
+  port = 3000;
+}
+app.listen(port, function() {
+  console.log("server is running in heroku or 3000")
 });
 
 //making body parser avaliable to use in the code
