@@ -1,0 +1,24 @@
+<%- include("header")  -%>
+<div class="box" id="heading">
+  <h1><%=day%></h1>
+  <h1><%=listTitle%></h1>
+</div>
+<div class="box">
+  <!--this is the syntax to use the js code inside the .ejs file-->
+  <%  NewListItem.forEach((item) =>{ %>
+  <form action="/delete" method="POST">
+    <div class="item">
+      <!--submit the value to the form when the check box is clicked-->
+      <input type="checkbox" name="delectCheck" value="<%=item._id%>" onchange="this.form.submit()">
+      <!--there we will have to newly created list-->
+      <p><%=item.name %></p>
+    </div>
+    <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+  </form>
+  <% }) %>
+  <form class="item" action="/post" method="POST">
+    <input type="text" name="newItem" placeholder="New items" autocomplete="off">
+    <button type="submit" name="list" value=<%= listTitle %>>+</button>
+  </form>
+</div>
+<%- include("footer")-%>
