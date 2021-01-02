@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
+
+<body>
+  <div>
+    <video id="video" src="video/video.mp4" controls="true" />
+  </div>
+  <div>
+    <canvas id="c1" width="160" height="96"></canvas>
+    <canvas id="c2" width="160" height="96"></canvas>
+  </div>
+  <div>
+    <button id="startRecording" onclick="processor.startRecording()">
+      Start Recording
+    </button>
+
+    <button id="stopRecording" onclick="processor.stopRecording()" disabled="disabled">
+      Stop Recording
+    </button>
+
+    <button id="downloadRecording" onclick="processor.downloadRecording()">
+      Download Recording
+    </button>
+
+    <a id="downloadButton" class="button">
+      Download
+    </a>
+  </div>
+  <script type="text/javascript">
+    //creating a processor object for functions
+    let processor = {
+      timerCallback: function () {
+        if (this.video.paused || this.video.ended) {
+          return;
+        }
+        this.computeFrame();
+        let self = this;
+        setTimeout(function () {
+          self.timerCallback();
+        }, 0);
+      },
+
+      doLoad: function () {
+        this.video = document.getElementById("video");
+        this.c1 = document.getElementById("c1");
+        this.ctx1 = this.c1.getContext("2d");
+        this.c2 = document.getElementById("c2");
+        this.ctx2 = this.c2.getContext("2d");
+        let self = this;
+        this.video.addEventListener("play", function (e) {
+          self.width = self.video.videoWidth / 2;
+          self.height = self.video.videoHeight / 2;
+          self.timerCallback();
+        }, false);
+        this.recorder = null;
+      },
+
+      computeFrame: function () {
+        this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
+        //getting one frame from canvas video
+        let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
+        //from frame we are getting the pixels
+        let no_of_pixels = frame.data.length / 4;
+
+        //looping througth the pixels and if its yellow we are setting in to opacity to zero
+        for (let i = 0; i < no_of_pixels; i++) {
+          let r = frame.data[i * 4 + 0];
+          let g = frame.data[i * 4 + 1];
+          let b = frame.data[i * 4 + 2];
+
+          /** Change green pixels to transparents */
+          // if (g > 100 && r > 100 && b < 43)
+          // {
+          //     frame.data[i * 4 + 3] = 0;
+          // }
+
+          /** Change black pixels to transparents */
+          // if (g < 50 && r <50 && b <50)
+          // {
+          //     frame.data[i * 4 + 3] = 0;
+          // }
+
+          /** Change green pixels to red */
+          if (g > 100 && r > 100 && b < 43) {
+            frame.data[i * 4 + 0] = 255;
+            frame.data[i * 4 + 1] = 0;
+            frame.data[i * 4 + 2] = 0;
+          }
+        }
+        //putting the new image to the two canvas
+        this.ctx2.putImageData(frame, 0, 0);
+        return;
+      },
+
+      initializeMediaRecordingForCanvas: () => {
+        console.log(this.c2);
+        this.stream = this.c2.captureStream(25);
+        console.log(this.stream);
+      },
+
+      startRecording: () => {
+        processor.initializeMediaRecordingForCanvas();
+        console.log(this.stream);
+        this.recorder = new MediaRecorder(this.stream);
+
+        //Creates an empty array, data, which will be used to hold the Blobs
+        //of media data provided to our ondataavailable event handler.
+        this.data = [];
+
+        //Sets up the handler for the dataavailable event. 
+        //The received event's data property is a Blob that contains the media data.
+        //The event handler simply pushes the Blob onto the data array.
+        this.recorder.ondataavailable = event => {
+          this.data.push(event.data);
+          console.log(" media recorder returned data @ " + new Date().toLocaleString());
+        }
+        this.recorder.start(5000);
+        document.getElementById("startRecording").setAttribute("disabled", "disabled");
+        document.getElementById("stopRecording").removeAttribute("disabled");
+      },
+
+      stopRecording: () => {
+        this.recorder.stop();
+        console.log(" media recorder stopped @ " + new Date().toLocaleString());
+        console.log("number of chunks recorded = " + this.data.length);
+        document.getElementById("startRecording").removeAttribute("disabled");
+        document.getElementById("stopRecording").setAttribute("disabled", "disabled");
+      },
+
+      downloadRecording: () => {
+        let recordedChunks = this.data;
+        console.log("downloading " + recordedChunks);
+        // The recording process's resolution handler receives as input an array of media data Blobs locally known as recordedChunks. 
+        // The first thing we do is merge the chunks into a single Blob whose MIME type is "video/webm" by taking advantage of the fact that the Blob() 
+        // constructor concatenates arrays of objects into one object.
+        let recordedBlob = new Blob(recordedChunks, {
+          type: "video/webm"
+        });
+
+        console.log("blob ceated from chunks", recordedBlob);
+        //Then URL.createObjectURL() is used to create an URL that references the blob;
+        //this is then made the value of the recorded video playback element's src attribute
+        //(so that you can play the video from the blob)
+        let recordedData = URL.createObjectURL(recordedBlob);
+        let downloadButton = document.getElementById("downloadButton");
+        //set the target of the download button's link.
+        //Then the download button's download attribute is set. 
+        downloadButton.href = recordedData;
+
+        //So by setting the download link's download attribute to "RecordedVideo.webm", 
+        // we tell the browser that clicking the button should download a file named "RecordedVideo.webm" 
+        // whose contents are the recorded video.
+        downloadButton.download = "recordeding.webm";
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      processor.doLoad();
+    });
+  </script>
+</body>
+
+</html>

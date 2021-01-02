@@ -1,0 +1,13 @@
+Project learning concept :
+
+step 1: merge two videos into canvas using CanvasAPI
+
+step 2: merge two audio channels into one audio using AudioContextAPI 
+
+step 3: video and audio recording using MediaRecorderAPI
+
+step 4: canvas recording using MediaRecorderAPI
+
+Step 5: File system access API for local file access - inprogress
+
+Step 6: merging audio stream from AudioContextAPI and video stream from canvas into single mediastream using MediaStreamTrack api 

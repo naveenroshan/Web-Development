@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>Audio tutorial</title>
+	<style type="text/css">
+		#button {
+			margin-left: 45%;
+			margin-top: 10%;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="border:1px solid red">
+
+		<audio src="audio/Rocky.mp3" controls></audio>
+	</div>
+	<div id="button">
+		<button data-playing="false" role="switch" aria-checked="false" id="play">
+			<span>Play/Pause</span>
+		</button>
+		<br>
+		<br>
+		<h1>volume</h1>
+		<input type="range" id="volume" min="0" max="2" value="1" step="0.01">
+		<br>
+		<br>
+		<h1>panning</h1>
+		<input type="range" id="panner" min="-1" max="1" value="0" step="0.01">
+		<br>
+		<br>
+		<button onclick="someUserTriggeredAction()">Enable AudioContext</button>
+	</div>
+
+
+	<script type="text/javascript">
+		// for cross browser compatibility
+		const AudioContext = window.AudioContext || window.webkitAudioContext;
+		let audioContext = null;
+
+		function someUserTriggeredAction() {
+
+			//suppling the source audio node to baseAudio context
+			//track.connect(audioContext.destination);
+
+			//get the audio element
+			const audioElemnt = document.querySelector('audio');
+
+			//when the track finishes playing
+			audioElemnt.addEventListener('ended', function () {
+				playButton.dataset.playing = 'false';
+			}, false);
+
+			//selecting our play button
+			const playButton = document.querySelector('#play');
+
+			//adding the play/pause button function
+			playButton.addEventListener("click", function () {
+				console.log("clicked", this.dataset.playing);
+
+				//play or pause track depending on the state
+				if (this.dataset.playing === 'false') {
+					console.log("about to play");
+					audioElemnt.play();
+					console.log("playing..");
+					this.dataset.playing = 'true';
+
+					// check if context is in suspended state (autoplay policy)
+					if (audioContext.state === 'suspended') {
+						audioContext.resume();
+					}
+				} else if (this.dataset.playing === 'true') {
+					console.log("about to pause");
+					audioElemnt.pause();
+					this.dataset.playing = 'false';
+
+					// check if context is in suspended state (autoplay policy)
+					if (audioContext.state === 'suspended') {
+						audioContext.resume();
+					}
+				}
+
+			}, false);
+
+			//audio context object
+			audioContext = new AudioContext();
+
+			//pass it into the audio context
+			const track = audioContext.createMediaElementSource(audioElemnt);
+
+			//modifying the sound
+			const gainNode = audioContext.createGain();
+			//track.connect(gainNode).connect(audioContext.destination);
+
+			//getting the volume range
+			const volumeControl = document.querySelector('#volume');
+
+			//adjust our volume values 
+			volumeControl.addEventListener('input', function () {
+				console.log("Changing the gain to ", this.value);
+				gainNode.gain.value = this.value;
+			}, false);
+
+			//adjust our audio graph again, to connect all the nodes together
+			//track.connect(gainNode).connect(audioContext.destination);
+
+			//stero panning
+			const pannerOption = {
+				pan: 0
+			};
+			const panner = new StereoPannerNode(audioContext, pannerOption);
+			const pannerControl = document.querySelector('#panner');
+
+			//adjust our panner values 
+			pannerControl.addEventListener('input', function () {
+				panner.pan.value = this.value;
+			}, false);
+
+			//adjust our audio graph again, to connect all the nodes together
+			track.connect(gainNode).connect(panner).connect(audioContext.destination);
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Audio tutorial</title>
+    <style type="text/css">
+        #button {
+            margin-left: 45%;
+            margin-top: 10%;
+        }
+    </style>
+</head>
+
+<body style="background-color: blue;">
+    <div style="border:1px solid red">
+
+        <video id="video1" data-playbutton="btn1" src="video/video.mp4" controls="true"></video>
+        <video id="video2" data-playbutton="btn2" src="video/video2.mp4" controls="true"></video>
+
+        <button id="init" onclick="init();">Init</button>
+
+        <button id="btn1" data-playing="false" data-audiosrc="video1" class="play_button">Track 1</button>
+        <button id="btn2" data-playing="false" data-audiosrc="video2" class="play_button">Track 2</button>
+
+    </div>
+
+    <script type="text/javascript">
+        // for cross browser compatibility
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioContext = null;
+
+        function init() {
+
+            console.log("init fn called")
+
+            //audio context object
+            audioContext = new AudioContext();
+
+            //get the audio element
+            const audioElemnts = document.querySelectorAll('video');
+            const playButtons = document.querySelectorAll('.play_button');
+
+            audioElemnts.forEach((el) => {
+                let playButtonId = el.dataset.playbutton;
+                let playButton = document.querySelector("#" + playButtonId);
+
+                //when the track finishes playing
+                el.addEventListener('ended', function () {
+                    playButton.dataset.playing = 'false';
+                }, false);
+
+                //getting the audio from the video to the audio context
+                let videoFileAudioSource = audioContext.createMediaElementSource(el);
+                console.log(videoFileAudioSource);
+                //passing the audio from video to the pipe line 
+                videoFileAudioSource.connect(audioContext.destination);
+            });
+
+            playButtons.forEach((btn) => {
+                let audioSrcId = btn.dataset.audiosrc;
+                let audioElemnt = document.querySelector("#" + audioSrcId);
+                loadPlayFunctionality(btn, audioElemnt);
+            });
+        }
+
+        function loadPlayFunctionality(playButton, audioElemnt) {
+
+            //adding the play pause button function
+            playButton.addEventListener("click", function () {
+
+                //play or pause track depending on the state
+                if (this.dataset.playing === 'false') {
+                    audioElemnt.play();
+                    this.dataset.playing = 'true';
+                    // check if context is in suspended state (autoplay policy)
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+                } else if (this.dataset.playing === 'true') {
+                    //console.log("about to pause");
+                    audioElemnt.pause();
+                    this.dataset.playing = 'false';
+                    // check if context is in suspended state (autoplay policy)
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+                }
+
+            }, false);
+        }
+    </script>
+</body>

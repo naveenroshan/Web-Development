@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
+
+<body>
+  <div>
+    <video id="video" src="video/video.mp4" controls="true" />
+  </div>
+  <div>
+    <canvas id="c1" width="160" height="96"></canvas>
+    <canvas id="c2" width="160" height="96"></canvas>
+  </div>
+  <script type="text/javascript">
+    //creating a processor object for functions
+    let processor = {
+      timerCallback: function () {
+        if (this.video.paused || this.video.ended) {
+          return;
+        }
+        this.computeFrame();
+        let self = this;
+        setTimeout(function () {
+          self.timerCallback();
+        }, 0);
+      },
+
+      doLoad: function () {
+        this.video = document.getElementById("video");
+        this.c1 = document.getElementById("c1");
+        this.ctx1 = this.c1.getContext("2d");
+        this.c2 = document.getElementById("c2");
+        this.ctx2 = this.c2.getContext("2d");
+        let self = this;
+        this.video.addEventListener("play", function (e) {
+          self.width = self.video.videoWidth / 2;
+          self.height = self.video.videoHeight / 2;
+          self.timerCallback();
+        }, false);
+      },
+
+      computeFrame: function () {
+        this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
+        //getting one frame from canvas video
+        let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
+        //from frame we are getting the pixels
+        let no_of_pixels = frame.data.length / 4;
+
+        //looping througth the pixels and if its yellow we are setting in to opacity to zero
+        for (let i = 0; i < no_of_pixels; i++) {
+          let r = frame.data[i * 4 + 0];
+          let g = frame.data[i * 4 + 1];
+          let b = frame.data[i * 4 + 2];
+
+          /** Change green pixels to transparents */
+          // if (g > 100 && r > 100 && b < 43)
+          // {
+          //     frame.data[i * 4 + 3] = 0;
+          // }
+
+          /** Change black pixels to transparents */
+          // if (g < 50 && r <50 && b <50)
+          // {
+          //     frame.data[i * 4 + 3] = 0;
+          // }
+
+          /** Change green pixels to red */
+          if (g > 100 && r > 100 && b < 43) {
+            frame.data[i * 4 + 0] = 255;
+            frame.data[i * 4 + 1] = 0;
+            frame.data[i * 4 + 2] = 0;
+          }
+        }
+        //putting the new image to the two canvas
+        this.ctx2.putImageData(frame, 0, 0);
+        return;
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      processor.doLoad();
+    });
+  </script>
+</body>
+
+</html>

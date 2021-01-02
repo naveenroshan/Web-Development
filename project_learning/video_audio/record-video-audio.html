@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body style="display:flex">
+
+	<div>
+		<video id="main_video_1" muted autoplay style="height: 240px;width: 320px;" crossorigin="anonymous"></video>
+		<div>
+			<button onclick="handleMediaFile()">Open New Media File..</button>
+		</div>
+		<br>
+		<div>
+			<button onclick="openCamera()">openCamera..</button>
+		</div>
+		<br>
+		<div>
+			<button onclick="stopRecord()">stopRecording..</button>
+		</div>
+	</div>
+
+	<script type="text/javascript" crossorigin="anonymous">
+		var fileHandle = null;
+		var localStream = null;
+		var mr = null;
+		var writable = null;
+
+		function stopRecord() {
+			console.log("Stopped");
+			mr.stop();
+			closeWriteable();
+		}
+
+		async function writeFile(fileHandle, contents, bytesWritten) {
+			// Create a FileSystemWritableFileStream to write to.
+
+			if (writable == null) {
+				writable = await fileHandle.createWritable({
+					keepExistingData: true
+				});
+				console.log("Opened writable : ", writable);
+			}
+			// Write the contents of the file to the stream.
+			let result = await writable.write({
+				type: "write",
+				position: bytesWritten,
+				data: contents
+			});
+			console.log("Write result at position : ", bytesWritten, result);
+			//let result = await writable.write(contents);
+			//await writable.write({ type: "seek", position: bytesWritten });
+			closeWriteable();
+			//console.log("Closed writable : ", writable);
+		}
+
+		async function getNewFileHandleForVideoRecording() {
+			// For Chrome 86 and later...
+			if ('showSaveFilePicker' in window) {
+				const opts = {
+					types: [{
+						description: 'Video Recording file',
+						accept: {
+							'video/webm': ['.webm']
+						},
+					}],
+				};
+				console.log("Chrome is above 86..");
+				return await window.showSaveFilePicker(opts);
+			}
+
+			// For Chrome 85 and earlier...
+			const opts = {
+				type: 'save-file',
+				accepts: [{
+					description: 'Text file',
+					extensions: ['txt'],
+					mimeTypes: ['text/plain'],
+				}],
+			};
+			return await window.chooseFileSystemEntries(opts);
+		}
+
+		function writeBlobToFile(blob, bytesWritten) {
+			writeFile(fileHandle, blob, bytesWritten);
+			//console.log("Written blob data : ", blob);
+		}
+
+		async function closeWriteable() {
+
+			// Close the file and write the contents to disk.
+			if (writable !== null)
+				await writable.close();
+
+			writable = null;
+		}
+
+		function handleMediaFile() {
+			fileHandle = getNewFileHandleForVideoRecording();
+			console.log("Media FileHandle : ", fileHandle);
+			fileHandle.then(fh => {
+				console.log("fh  =", fh);
+				fileHandle = fh;
+				fileHandle.getFile()
+					.then(file => console.log("File : ", file));
+			});
+		}
+
+		async function openCamera() {
+			let ld = {
+				video: {
+					width: 640,
+					height: 480
+				},
+				audio: true,
+			};
+			let best_for_recording = ld;
+
+			let default_constraints = {
+				video: true,
+				audio: true
+			};
+			default_constraints = best_for_recording;
+
+			//console.log("ide 640480,43415,33444,34");
+			let localStream = await navigator.mediaDevices.getUserMedia(default_constraints);
+			localStream = localStream;
+
+			var options = {
+				mimeType: "video/webm; codecs=vp9"
+			};
+			mr = new MediaRecorder(localStream, options);
+			mr = mr;
+
+			mr.onstart = (e) => {
+				var now = new Date();
+				console.log("RecordingStart Event Fired @ " + now.toString());
+			}
+
+			mr.onstop = (e) => {
+				var now = new Date();
+				console.log("RecordingStop Event Fired @ " + now.toString());
+			}
+
+			let chunk_count = 0;
+			let bytesWritten = 0;
+			let numberOfParts = 0;
+			mr.ondataavailable = (e) => {
+				chunk_count++;
+				let chunks = [];
+				chunks.push(e.data);
+				let recordedBlob = new Blob(chunks, {
+					type: "video/webm"
+				});
+
+				if (numberOfParts > 0) {
+					writeBlobToFile(recordedBlob, bytesWritten);
+				} else {
+					writeBlobToFile(recordedBlob, 0);
+				}
+				numberOfParts++;
+				bytesWritten += recordedBlob.size;
+
+				//fileHandle.getFile()
+				//.then(file => console.log("File size after writing media data: ", file));
+
+				// if(numberOfParts===10)
+				// {
+				//   mr.stop();
+				//   closeWriteable();
+				// }
+			}
+
+			mr.start(5000);
+			console.warn("Success !! We got a local stream.");
+			document.getElementById("main_video_1").srcObject = localStream;
+		}
+	</script>
+
+</body>
+
+</html>

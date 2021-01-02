@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Audio tutorial</title>
+    <style type="text/css">
+        #button {
+            margin-left: 45%;
+            margin-top: 10%;
+        }
+    </style>
+</head>
+
+<body style="background-color: #fff;">
+    <div style="border:0px solid red">
+        <audio id="track1" data-playbutton="btn1" src="audio/Rocky.mp3" controls></audio>
+        <audio id="track2" data-playbutton="btn2" src="audio/trackOne.mp3" controls></audio>
+        <audio id="track3" data-playbutton="btn3" src="audio/trackTwo.mp3" controls></audio>
+
+        <button id="init" onclick="init();">Init</button>
+        <button id="btn1" data-playing="false" data-audiosrc="track1" class="play_button">Track 1</button>
+        <button id="btn2" data-playing="false" data-audiosrc="track2" class="play_button">Track 2</button>
+        <button id="btn3" data-playing="false" data-audiosrc="track3" class="play_button">Track 3</button>
+        <br>
+        <hr>
+        <br>
+        <h1>example for event listeners boolean </h1>
+        <div id="div1"
+            style="padding:50px;border:1px solid red;display: flex;justify-content: center;align-items: center;">
+            <button id="divButton">Click me</button>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        // for cross browser compatibility
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioContext = null;
+
+        function init() {
+
+            console.log("init fn called")
+
+            //audio context object
+            audioContext = new AudioContext();
+
+            //get the audio element
+            const audioElemnts = document.querySelectorAll('audio');
+            //get the play button
+            const playButtons = document.querySelectorAll('.play_button');
+
+            //cycle throught the audio element
+            audioElemnts.forEach((audioElm) => {
+                applyFunctionalityForEveryAudioElement(audioElm);
+            });
+
+            //cycle through the play button
+            playButtons.forEach((playBtn) => {
+                applyFunctionalityForEveryPlayButton(playBtn);
+            });
+        }
+
+        function applyFunctionalityForEveryAudioElement(audioElm) {
+            //get the user defined play button id from play button tag
+            let playButtonId = audioElm.dataset.playbutton;
+            let playButton = document.querySelector("#" + playButtonId);
+
+            //when the track finishes playing
+            audioElm.addEventListener('ended', () => {
+                playButton.dataset.playing = 'false';
+            }, false);
+
+            //set the audio tag to the track for source of audio
+            //Ref https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
+            const track = audioContext.createMediaElementSource(audioElm);
+            //pass the source autio to the audio context node
+            track.connect(audioContext.destination);
+        }
+
+        function applyFunctionalityForEveryPlayButton(playButton) {
+            //get the user defined attribute for paly button
+            let audioSrcId = playButton.dataset.audiosrc;
+            //get the auto elemrnt relative to the play button
+            let audioElemnt = document.querySelector("#" + audioSrcId);
+
+            //adding the play pause button function
+            playButton.addEventListener("click", function () {
+
+                //play or pause track depending on the state
+                if (this.dataset.playing === 'false') {
+                    audioElemnt.play();
+                    this.dataset.playing = 'true';
+
+                    // check if context is in suspended state (autoplay policy)
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+                } else if (this.dataset.playing === 'true') {
+                    //console.log("about to pause");
+                    audioElemnt.pause();
+                    this.dataset.playing = 'false';
+                    
+                    // check if context is in suspended state (autoplay policy)
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+                }
+            }, false);
+
+        }
+        //example to two for the event listeners boolean parameter
+        function loadEventListeners() {
+            let divElement = document.querySelector("#div1");
+            let divButton = document.querySelector("#divButton");
+
+            divElement.addEventListener('click', (e) => {
+                console.log("division is clicked.");
+            }, false);
+
+            divButton.addEventListener('click', (e) => {
+                console.log("division btn is clicked.", e);
+                //e.stopPropagation();
+            }, false);
+
+        }
+        loadEventListeners();
+    </script>
+</body>
