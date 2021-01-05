@@ -4,7 +4,6 @@
 <head></head>
 
 <body style="display:flex">
-
 	<div>
 		<video id="main_video_1" muted autoplay style="height: 240px;width: 320px;" crossorigin="anonymous"></video>
 		<div>
@@ -19,39 +18,23 @@
 			<button onclick="stopRecord()">stopRecording..</button>
 		</div>
 	</div>
-
+	
 	<script type="text/javascript" crossorigin="anonymous">
+
 		var fileHandle = null;
 		var localStream = null;
 		var mr = null;
 		var writable = null;
 
-		function stopRecord() {
-			console.log("Stopped");
-			mr.stop();
-			closeWriteable();
-		}
-
-		async function writeFile(fileHandle, contents, bytesWritten) {
-			// Create a FileSystemWritableFileStream to write to.
-
-			if (writable == null) {
-				writable = await fileHandle.createWritable({
-					keepExistingData: true
-				});
-				console.log("Opened writable : ", writable);
-			}
-			// Write the contents of the file to the stream.
-			let result = await writable.write({
-				type: "write",
-				position: bytesWritten,
-				data: contents
+		function handleMediaFile() {
+			fileHandle = getNewFileHandleForVideoRecording();
+			console.log("Media FileHandle : ", fileHandle);
+			fileHandle.then(fh => {
+				console.log("fh  =", fh);
+				fileHandle = fh;
+				fileHandle.getFile()
+					.then(file => console.log("File : ", file));
 			});
-			console.log("Write result at position : ", bytesWritten, result);
-			//let result = await writable.write(contents);
-			//await writable.write({ type: "seek", position: bytesWritten });
-			closeWriteable();
-			//console.log("Closed writable : ", writable);
 		}
 
 		async function getNewFileHandleForVideoRecording() {
@@ -68,7 +51,6 @@
 				console.log("Chrome is above 86..");
 				return await window.showSaveFilePicker(opts);
 			}
-
 			// For Chrome 85 and earlier...
 			const opts = {
 				type: 'save-file',
@@ -79,31 +61,6 @@
 				}],
 			};
 			return await window.chooseFileSystemEntries(opts);
-		}
-
-		function writeBlobToFile(blob, bytesWritten) {
-			writeFile(fileHandle, blob, bytesWritten);
-			//console.log("Written blob data : ", blob);
-		}
-
-		async function closeWriteable() {
-
-			// Close the file and write the contents to disk.
-			if (writable !== null)
-				await writable.close();
-
-			writable = null;
-		}
-
-		function handleMediaFile() {
-			fileHandle = getNewFileHandleForVideoRecording();
-			console.log("Media FileHandle : ", fileHandle);
-			fileHandle.then(fh => {
-				console.log("fh  =", fh);
-				fileHandle = fh;
-				fileHandle.getFile()
-					.then(file => console.log("File : ", file));
-			});
 		}
 
 		async function openCamera() {
@@ -131,17 +88,14 @@
 			};
 			mr = new MediaRecorder(localStream, options);
 			mr = mr;
-
 			mr.onstart = (e) => {
 				var now = new Date();
 				console.log("RecordingStart Event Fired @ " + now.toString());
 			}
-
 			mr.onstop = (e) => {
 				var now = new Date();
 				console.log("RecordingStop Event Fired @ " + now.toString());
 			}
-
 			let chunk_count = 0;
 			let bytesWritten = 0;
 			let numberOfParts = 0;
@@ -160,7 +114,6 @@
 				}
 				numberOfParts++;
 				bytesWritten += recordedBlob.size;
-
 				//fileHandle.getFile()
 				//.then(file => console.log("File size after writing media data: ", file));
 
@@ -170,10 +123,49 @@
 				//   closeWriteable();
 				// }
 			}
-
 			mr.start(5000);
 			console.warn("Success !! We got a local stream.");
 			document.getElementById("main_video_1").srcObject = localStream;
+		}
+
+		function writeBlobToFile(blob, bytesWritten) {
+			writeFile(fileHandle, blob, bytesWritten);
+			//console.log("Written blob data : ", blob);
+		}
+
+		async function writeFile(fileHandle, contents, bytesWritten) {
+			// Create a FileSystemWritableFileStream to write to.
+
+			if (writable == null) {
+				writable = await fileHandle.createWritable({
+					keepExistingData: true
+				});
+				console.log("Opened writable : ", writable);
+			}
+			// Write the contents of the file to the stream.
+			let result = await writable.write({
+				type: "write",
+				position: bytesWritten,
+				data: contents
+			});
+			console.log("Write result at position : ", bytesWritten, result);
+			//let result = await writable.write(contents);
+			//await writable.write({ type: "seek", position: bytesWritten });
+			closeWriteable();
+			//console.log("Closed writable : ", writable);
+		}
+
+		async function closeWriteable() {
+			// Close the file and write the contents to disk.
+			if (writable !== null)
+				await writable.close();
+			writable = null;
+		}
+
+		function stopRecord() {
+			console.log("Stopped");
+			mr.stop();
+			closeWriteable();
 		}
 	</script>
 
