@@ -51,3 +51,8 @@ app.get("/record-video-audio", function (req, res) {
     //sending the Html file to browser
     res.sendFile(__dirname + "/record-video-audio.html");
 });
+
+app.get("/One", function (req, res) {
+    //sending the Html file to browser
+    res.sendFile(__dirname + "/One.html");
+});

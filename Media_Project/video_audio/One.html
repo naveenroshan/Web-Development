@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Audio tutorial</title>
+</head>
+
+<body style="background-color: rgb(211, 211, 212);">
+    <div>
+        <video id="video1" data-playbutton="btn1" src="video/video.mp4" controls="true"></video>
+    </div>
+
+    <div>
+        <canvas id="c1" width="160" height="96"></canvas>
+        <canvas id="c2" width="160" height="96"></canvas>
+    </div>
+
+    <div>
+        <button id="startRecordingVideo" onclick="processor.startRecordingvideo()">
+            Start Recording video
+        </button>
+
+        <button id="startRecordingVideo" onclick="processor.printCanvasStream()">
+          Print Canvas stream 
+      </button>
+
+    </div>
+    <br> 
+    <div>
+        <video id="video2" data-playbutton="btn2" src="video/video2.mp4" controls="true"></video>
+        <br>
+        <br>
+        <button onclick="someUserTriggeredAction()">Enable AudioContext</button>
+        <button data-playing="false" role="switch" aria-checked="false" id="play">
+			<span>Play/Pause</span>
+		</button>
+    </div>
+
+
+    <script type="text/javascript">
+
+        let processor = {
+          timerCallback: function () {
+            if (this.video.paused || this.video.ended) {
+              return;
+            }
+            this.computeFrame();
+            let self = this;
+            setTimeout(function () {
+              self.timerCallback();
+            }, 0);
+          },
+
+          doLoad: function () {
+            this.video = document.getElementById("video1");
+            this.c1 = document.getElementById("c1");
+            this.ctx1 = this.c1.getContext("2d");
+            this.c2 = document.getElementById("c2");
+            this.ctx2 = this.c2.getContext("2d");
+            let self = this;
+            this.video.addEventListener("play", function (e) {
+              self.width = self.video.videoWidth / 2;
+              self.height = self.video.videoHeight / 2;
+              self.timerCallback();
+            }, false);
+            this.recorder = null;
+          },
+
+          computeFrame: function () {
+            this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
+            let frame = this.ctx1.getImageData(0, 0, this.width, this.height);
+            let no_of_pixels = frame.data.length / 4;
+            for (let i = 0; i < no_of_pixels; i++) {
+              let r = frame.data[i * 4 + 0];
+              let g = frame.data[i * 4 + 1];
+              let b = frame.data[i * 4 + 2];
+            }
+            this.ctx2.putImageData(frame, 0, 0);
+            return;
+          },
+
+          printCanvasStream: function() {
+            console.log("Canvas Stream ", this.c2.captureStream(25).getVideoTracks());
+          }
+
+          
+        //   initializeMediaRecordingForCanvas: () => {
+        //     console.log(this.c2);
+        //     this.stream = this.c2.captureStream(25);
+        //     console.log(this.stream);
+        //   },
+
+        //   startRecordingvideo: () => {
+        //     processor.initializeMediaRecordingForCanvas();
+        //     console.log(this.stream);
+        //     this.recorder = new MediaRecorder(this.stream);
+        //     this.data = [];
+        //     this.recorder.ondataavailable = event => {
+        //       this.data.push(event.data);
+        //       console.log(" media recorder returned data @ " + new Date().toLocaleString());
+        //     }
+        //     this.recorder.start(5000);
+        //     document.getElementById("startRecordingVideo").setAttribute("disabled", "disabled");
+        //   }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+          processor.doLoad();
+        });
+
+        // for cross browser compatibility
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioContext = null;
+
+        function someUserTriggeredAction() {
+            console.log("Enabled audio context")
+
+        //get the audio element
+        const audioElemnt = document.querySelector('#video2');
+
+        //when the track finishes playing
+        audioElemnt.addEventListener('ended', function () {
+            playButton.dataset.playing = 'false';
+        }, false);
+
+        //selecting our play button
+        const playButton = document.querySelector('#play');
+
+        //adding the play/pause button function
+        playButton.addEventListener("click", function () {
+            console.log("clicked", this.dataset.playing);
+
+            //play or pause track depending on the state
+            if (this.dataset.playing === 'false') {
+                console.log("about to play");
+                audioElemnt.play();
+                console.log("playing..");
+                this.dataset.playing = 'true';
+
+                // check if context is in suspended state (autoplay policy)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            } else if (this.dataset.playing === 'true') {
+                console.log("about to pause");
+                audioElemnt.pause();
+                this.dataset.playing = 'false';
+
+                // check if context is in suspended state (autoplay policy)
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            }
+
+        }, false);
+
+        //audio context object
+        audioContext = new AudioContext();
+
+        //pass it into the audio context
+        const track = audioContext.createMediaElementSource(audioElemnt);
+
+        //modifying the sound
+        const gainNode = audioContext.createGain();
+        track.connect(gainNode).connect(audioContext.destination);
+        console.log(track)
+    }
+    </script>
+</body>
+
+</html>
