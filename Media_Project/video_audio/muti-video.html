@@ -56,7 +56,7 @@
                 //passing the audio from video to the pipe line 
                 videoFileAudioSource.connect(audioContext.destination);
             });
-
+            //cycling throught the playbutton
             playButtons.forEach((btn) => {
                 let audioSrcId = btn.dataset.audiosrc;
                 let audioElemnt = document.querySelector("#" + audioSrcId);

@@ -101,7 +101,7 @@
                     //console.log("about to pause");
                     audioElemnt.pause();
                     this.dataset.playing = 'false';
-                    
+
                     // check if context is in suspended state (autoplay policy)
                     if (audioContext.state === 'suspended') {
                         audioContext.resume();

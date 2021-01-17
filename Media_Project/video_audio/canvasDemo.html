@@ -17,6 +17,7 @@
   <script type="text/javascript">
     //creating a processor object for functions
     let processor = {
+      //calling the computeframe method many times till the video ends
       timerCallback: function () {
         if (this.video.paused || this.video.ended) {
           return;
@@ -30,9 +31,13 @@
 
       doLoad: function () {
         this.video = document.getElementById("video");
+        //creating convas element one
         this.c1 = document.getElementById("c1");
+        //getting the convas element value
         this.ctx1 = this.c1.getContext("2d");
+        //creating convas element two
         this.c2 = document.getElementById("c2");
+        //getting the convas element value
         this.ctx2 = this.c2.getContext("2d");
         let self = this;
         this.video.addEventListener("play", function (e) {

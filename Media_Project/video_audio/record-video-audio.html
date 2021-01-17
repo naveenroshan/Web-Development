@@ -18,9 +18,8 @@
 			<button onclick="stopRecord()">stopRecording..</button>
 		</div>
 	</div>
-	
-	<script type="text/javascript" crossorigin="anonymous">
 
+	<script type="text/javascript" crossorigin="anonymous">
 		var fileHandle = null;
 		var localStream = null;
 		var mr = null;
@@ -36,7 +35,7 @@
 					.then(file => console.log("File : ", file));
 			});
 		}
-
+		//for local storage native window file save window
 		async function getNewFileHandleForVideoRecording() {
 			// For Chrome 86 and later...
 			if ('showSaveFilePicker' in window) {
@@ -62,7 +61,7 @@
 			};
 			return await window.chooseFileSystemEntries(opts);
 		}
-
+		//opening the video cam and spefing some option
 		async function openCamera() {
 			let ld = {
 				video: {
@@ -80,6 +79,7 @@
 			default_constraints = best_for_recording;
 
 			//console.log("ide 640480,43415,33444,34");
+			//getting the video and audio from user computer
 			let localStream = await navigator.mediaDevices.getUserMedia(default_constraints);
 			localStream = localStream;
 
