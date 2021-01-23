@@ -56,3 +56,8 @@ app.get("/Step6", function (req, res) {
     //sending the Html file to browser
     res.sendFile(__dirname + "/Step6.html");
 });
+
+app.get("/Step7", function (req, res) {
+    //sending the Html file to browser
+    res.sendFile(__dirname + "/Step7.html");
+});

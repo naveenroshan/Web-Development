@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Audio tutorial</title>
+</head>
+
+<body style="background-color: rgb(211, 211, 212); display: flex;">
+  <div>
+    <video id="video1" data-playbutton="btn1" src="video/video.mp4" controls="true"></video>
+  </div>
+  <div>
+    <canvas id="c1" width="160" height="96"></canvas>
+  </div>
+  <br>
+  <div style="display:flex;">
+    <video id="video2" data-playbutton="btn2" src="video/video2.mp4" controls="true"></video>
+    <br>
+    <button id="startRecording" onclick="processor.startRecording()">
+      Start Recording
+    </button>
+    <br>
+    <button id="stopRecording" onclick="processor.stopRecording()" disabled="disabled">
+      Stop Recording
+    </button>
+    <button id="stopRecording" onclick="processor.handleMediaFile()">
+        Open File to save
+    </button>
+  </div>
+
+  <script type="text/javascript">
+    var writable = null;
+    var fileHandle = null;
+    var bytesWritten = 0;
+    var numberOfParts = 0;
+    let processor = {
+        //getting the video from video convas using mediastream
+      videoNewMediaStreams: function () {
+        if (this.newMediaStream === undefined || this.newMediaStream === null)
+          this.newMediaStream = new MediaStream();
+
+        console.log(this.newMediaStream.getVideoTracks().length);
+
+        this.c1.captureStream(25).getVideoTracks().forEach(videoTrack => {
+          this.newMediaStream.addTrack(videoTrack);
+        });
+
+        console.log(this.newMediaStream.getVideoTracks().length);
+      },
+
+      timerCallback: function () {
+        if (this.video.paused || this.video.ended) {
+          return;
+        }
+        this.computeFrame();
+        let self = this;
+        setTimeout(function () {
+          self.timerCallback();
+        }, 0);
+      },
+
+      doLoad: function () {
+        this.video = document.getElementById("video1");
+        this.c1 = document.getElementById("c1");
+        this.ctx1 = this.c1.getContext("2d");
+        let self = this;
+        this.video.addEventListener("play", function (e) {
+          self.width = self.video.videoWidth / 2;
+          self.height = self.video.videoHeight / 2;
+          self.timerCallback();
+        }, false);
+        this.recorder = null;
+      },
+
+      computeFrame: function () {
+        this.ctx1.drawImage(this.video, 0, 0, this.width, this.height);
+        return;
+      },
+      //getting the audio using audio context
+      audioNewMediaStreams: function () {
+        // for cross browser compatibility
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioContext = null;
+
+        console.log("Enabled audio context")
+
+        //get the audio element
+        const audioElemnt = document.querySelector('#video2');
+
+        //when the track finishes playing
+        audioElemnt.addEventListener('ended', function () {
+          playButton.dataset.playing = 'false';
+        }, false);
+
+        //audio context object
+        audioContext = new AudioContext();
+
+        //pass it into the audio context
+        const track = audioContext.createMediaElementSource(audioElemnt);
+
+        //modifying the sound
+        const gainNode = audioContext.createGain();
+
+        //the AudioContext Interface is used to create a new MediaStreamAudioDestinationNode object associated with a WebRTC MediaStream 
+        //representing an audio stream, which may be stored in a local file
+        let dest2 = audioContext.createMediaStreamDestination();
+        track.connect(gainNode).connect(dest2);
+        console.log(dest2);
+        console.log(dest2.stream.getAudioTracks().length);
+        //getting the stream audio and pushing to the newMediaStream
+        dest2.stream.getAudioTracks().forEach((audioTrack) => {
+          this.newMediaStream.addTrack(audioTrack);
+        });
+
+        console.log(this.newMediaStream.getAudioTracks().length);
+        console.log(this.newMediaStream.getVideoTracks().length);
+        console.log(this.newMediaStream);
+      },
+
+      startRecording: function () {        
+        this.videoNewMediaStreams();
+        this.audioNewMediaStreams();
+        console.log(this.newMediaStream);
+        //passing the newwMediaStream into the Media Recorder
+        this.recorder = new MediaRecorder(this.newMediaStream);
+
+        //Creates an empty array, data, which will be used to hold the Blobs
+        //of media data provided to our ondataavailable event handler.
+        this.data = [];
+     
+        //Sets up the handler for the dataavailable event. 
+        //The received event's data property is a Blob that contains the media data.
+        //The event handler simply pushes the Blob onto the data array.
+        this.recorder.ondataavailable = event => {
+          this.data.push(event.data);
+          let recordedBlob = new Blob(this.data, {
+					type: "video/webm"
+				});
+          console.log(" media recorder returned data @ " + new Date().toLocaleString());
+          if (numberOfParts > 0) {
+					this.writeBlobToFile(recordedBlob, bytesWritten);
+				} else {
+					this.writeBlobToFile(recordedBlob, 0);
+				}
+				numberOfParts++;
+				bytesWritten += recordedBlob.size;
+        }        
+        this.recorder.start(5000);
+        document.getElementById("startRecording").setAttribute("disabled", "disabled");
+        document.getElementById("stopRecording").removeAttribute("disabled");
+      },
+
+      stopRecording: function () {
+        this.recorder.stop();
+        console.log(" media recorder stopped @ " + new Date().toLocaleString());
+        console.log("number of chunks recorded = " + this.data.length);
+        document.getElementById("startRecording").removeAttribute("disabled");
+        document.getElementById("stopRecording").setAttribute("disabled", "disabled");
+      },
+
+      handleMediaFile:function() {
+			fileHandle = this.getNewFileHandleForVideoRecording();
+			console.log("Media FileHandle : ", fileHandle);
+			fileHandle.then(fh => {
+				console.log("fh  =", fh);
+				fileHandle = fh;
+				fileHandle.getFile()
+					.then(file => console.log("File : ", file));
+			});
+		},
+		//for local storage native window file save window
+		getNewFileHandleForVideoRecording : async function() {
+			// For Chrome 86 and later...
+			if ('showSaveFilePicker' in window) {
+				const opts = {
+					types: [{
+						description: 'Video Recording file',
+						accept: {
+							'video/webm': ['.webm']
+						},
+					}],
+				};
+				console.log("Chrome is above 86..");
+				return await window.showSaveFilePicker(opts);
+			}
+			// For Chrome 85 and earlier...
+			const opts = {
+				type: 'save-file',
+				accepts: [{
+					description: 'Text file',
+					extensions: ['txt'],
+					mimeTypes: ['text/plain'],
+				}],
+			};
+            return await window.chooseFileSystemEntries(opts);
+        },
+        writeBlobToFile:function(blob, bytesWritten) {
+			this.writeFile(fileHandle, blob, bytesWritten);
+			console.log("Written blob data : ", blob);
+		},
+		writeFile: async function (fileHandle, contents, bytesWritten) {
+			// Create a FileSystemWritableFileStream to write to.
+
+			if (writable == null) {
+				writable = await fileHandle.createWritable({
+					keepExistingData: true
+				});
+				console.log("Opened writable : ", writable);
+			}
+			// Write the contents of the file to the stream.
+			let result = await writable.write({
+				type: "write",
+				position: bytesWritten,
+				data: contents
+			});
+			console.log("Write result at position : ", bytesWritten, result);
+			//let result = await writable.write(contents);
+			//await writable.write({ type: "seek", position: bytesWritten });
+			this.closeWriteable();
+			//console.log("Closed writable : ", writable);
+		},
+		closeWriteable: async function() {
+			// Close the file and write the contents to disk.
+			if (writable !== null)
+				await writable.close();
+			writable = null;
+		}
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+      processor.doLoad();
+    });
+  </script>
+</body>
+
+</html>
