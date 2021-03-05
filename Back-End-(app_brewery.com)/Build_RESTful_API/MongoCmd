@@ -1,1 +1,12 @@
 "C:\Program Files\MongoDB\Server\4.0\bin\mongo.exe"
+
+
+Urls:
+get: http://localhost:3000/articles
+post: http://localhost:3000/postArticle
+delete: http://localhost:3000/deleteArticle
+
+get specfic : http://localhost:3000/specficArticle/put function
+put specfic : http://localhost:3000/specficArticle/Were you in love with her?title=put&content=put done
+patch specfic : http://localhost:3000/specficArticle/Wereyou?title=patch
+delete specfic : http://localhost:3000/specficArticle/Wereyou
