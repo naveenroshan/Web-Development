@@ -8,5 +8,5 @@
 - NOSQL (MongoDB, Mongoose)
 - Authentication & Security
 - mongoose encryption
-
+- hashing the password
 
