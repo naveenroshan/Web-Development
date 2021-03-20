@@ -9,6 +9,8 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose")
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const findOrCreate = require("mongoose-findorcreate");
 
 app.use(express.static("public"));
 
@@ -43,22 +45,62 @@ mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
     email: String,
-    password: String
+    password: String,
+    googleID: String
 });
 //used to salt & hash the passport and store in db
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 
 const User = new mongoose.model("User", userSchema);
 
 //creating the local configaration for passport-local for local login
 passport.use(User.createStrategy());
+
 //setting passport to serialize and deserialize user
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        done(err, user)
+    });
+});
+
+//setting up the google Oauth
+passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "http://localhost:3000/auth/google/secrets",
+        userProfileURL: "https://www.gooleapis.com/oauth2/v3/userinfo"
+    },
+    function (accessToken, refreshToken, profile, cb) {
+        console.log(profile);
+        //getting the user info from google and saving in the local mongodb for later use
+        User.findOrCreate({
+            googleId: profile.id
+        }, function (err, user) {
+            return cb(err, user)
+        });
+    }));
 
 app.get("/", function (req, res) {
     res.render("home");
 });
+
+//methode to get the user detials from google
+app.get("/auth/google", passport.authenticate("google", {
+    scope: ["email","profile"]
+}));
+
+//methode to redirect to our app
+app.get("/auth/google/secrets", passport.authenticate("google", {
+        failureRedirect: "/login"
+    }),
+    function (res, req) {
+        res.redirect("/secrets")
+    });
 
 app.get("/login", function (req, res) {
     res.render("login");
@@ -76,7 +118,7 @@ app.get("/secrets", function (req, res) {
     }
 });
 
-app.get("/logout", function(req, res){
+app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
 });
