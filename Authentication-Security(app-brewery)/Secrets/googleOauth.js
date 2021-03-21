@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-//setting up the session
+//setting up the session    
 app.use(session({
     secret: process.env.SECRET,
     resave: false,
@@ -46,7 +46,7 @@ mongoose.set("useCreateIndex", true);
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
-    googleID: String
+    googleId: String
 });
 //used to salt & hash the passport and store in db
 userSchema.plugin(passportLocalMongoose);
@@ -63,7 +63,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
+    User.findById(id, function(err, user) {
         done(err, user)
     });
 });
@@ -73,7 +73,7 @@ passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "http://localhost:3000/auth/google/secrets",
-        userProfileURL: "https://www.gooleapis.com/oauth2/v3/userinfo"
+        userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
     function (accessToken, refreshToken, profile, cb) {
         console.log(profile);
@@ -83,7 +83,8 @@ passport.use(new GoogleStrategy({
         }, function (err, user) {
             return cb(err, user)
         });
-    }));
+    }
+));
 
 app.get("/", function (req, res) {
     res.render("home");
@@ -91,7 +92,7 @@ app.get("/", function (req, res) {
 
 //methode to get the user detials from google
 app.get("/auth/google", passport.authenticate("google", {
-    scope: ["email","profile"]
+    scope: ["profile", "email"]
 }));
 
 //methode to redirect to our app
