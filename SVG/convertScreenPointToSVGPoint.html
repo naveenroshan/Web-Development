@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html style="height:100%;border: 0px solid blue;box-sizing: border-box;">
+
+<body id="body" style="margin:0px;border:0px solid green;height:100%;box-sizing:border-box;">
+
+    <svg id="svgCanvas" preserveAspectRatio="xMinYMin meet" style="height:400px;width:1000px;border:1px solid red" viewBox="0 0 500 300">
+        <circle id="circle_1" cx="50" cy="15" r="10" stroke="green" stroke-width="4" fill="yellow" />
+        <rect id="rectangle_1" width="100" height="150" stroke="green" x="100" y="100" stroke-width="4" fill="yellow" />
+    </svg>
+
+    <div style="display:flex;column-gap:50px">
+        <div id="pointerCoordinates"></div>
+    </div>
+    <div style="display:flex;column-gap:50px">
+        <div id="svgCoordinates"></div>
+    </div>
+    
+    <button onclick="moveShape()">Move Shape</button>
+    <button onclick="scaleUp()">ScaleUp Shape</button>
+
+    <script type="text/javascript">
+        function convertScreenPointToSVGPoint(x,y){
+                let svgCanvas = document.querySelector("#svgCanvas");
+                let pt = svgCanvas.createSVGPoint();
+                    pt.x = x;
+                    pt.y = y;
+                    console.log(pt);
+                let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+                console.log(svgPoint);
+                console.log("------------")
+                return svgPoint;
+        }
+
+        document.querySelector("#body").addEventListener("pointermove", (evt) => {
+            let mouseX = evt.x;
+            let mouseY = evt.y;
+            document.querySelector("#pointerCoordinates").innerHTML = "screen xy=" + mouseX + "," + mouseY;
+            let convertedSVGPoint = convertScreenPointToSVGPoint(mouseX, mouseY);
+            document.querySelector("#svgCoordinates")
+                    .innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;svg xy=" + convertedSVGPoint.x + "," + convertedSVGPoint.y;
+        });
+
+        function moveShape() {
+            let shape = document.querySelector("#rectangle_1");
+            let x = parseFloat(shape.getAttribute("x"));
+            let newXPosition = x + 10;
+            shape.setAttribute("x", newXPosition);
+        }
+
+        function scaleUp() {
+            let shape = document.querySelector("#circle_1");
+            let r = parseFloat(shape.getAttribute("r"));
+            let updatedRadius = r + 10;
+            shape.setAttribute("r", updatedRadius);
+        }
+    </script>
+</body>
+
+</html>

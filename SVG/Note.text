@@ -1,0 +1,21 @@
+>ALL shapes
+Rect - xy, height, width 
+Line - x, y
+Circle - cxcy, radius 
+eclipse - cxcy, rx, ry
+
+>Main Functions in SVG
+MSR:
+M - move/drag
+S - scale UP/DOWN
+R - Rotate 
+
+>View box
+viewBox - "x y VB_Width VB_Height"
+viewBox - "0 0 500 300"
+panned viewBox - "-50 -100 500 300"
+
+>screen pixel to svg :
+converting screen coordinaties (pixels) into SVG coordinates(Units) 
+This helps to maintain consistant svg canvas resolution across many screen resolution 
+
