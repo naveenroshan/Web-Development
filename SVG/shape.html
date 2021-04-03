@@ -2,31 +2,31 @@
 <html>
 
 <body>
-    <h1>My first SVG</h1>
+  <h1>My first SVG</h1>
 
-    <svg width="500" height="300" style="border:1px solid red">
-        <circle id="circle_1" cx="250" cy="150" r="40" stroke="green" stroke-width="4" fill="yellow" />
-        <rect id="rectangle_1" width="100" height="150" stroke="green" x="100" y="100" stroke-width="4" fill="yellow" />
-    </svg>
+  <svg width="500" height="300" style="border: 1px solid red">
+    <circle id="circle_1" cx="250" cy="150" r="40" stroke="green" stroke-width="4" fill="yellow" />
+    <rect id="rectangle_1" width="100" height="150" stroke="green" x="100" y="100" stroke-width="4" fill="yellow" />
+  </svg>
 
-    <button onclick="moveShape()">Move Shape</button>
-    <button onclick="scaleUp()">ScaleUp Shape</button>
+  <button onclick="moveShape()">Move Shape</button>
+  <button onclick="scaleUp()">ScaleUp Shape</button>
 
-    <script type="text/javascript">
-        function moveShape() {
-            let shape = document.querySelector("#rectangle_1");
-            let x = parseFloat(shape.getAttribute("x"));
-            let newXPosition = x + 10;
-            shape.setAttribute("x", newXPosition);
-        }
+  <script type="text/javascript">
+    function moveShape() {
+      let shape = document.querySelector("#rectangle_1");
+      let x = parseFloat(shape.getAttribute("x"));
+      let newXPosition = x + 10;
+      shape.setAttribute("x", newXPosition);
+    }
 
-        function scaleUp() {
-            let shape = document.querySelector("#circle_1");
-            let r = parseFloat(shape.getAttribute("r"));
-            let updatedRadius = r + 10;
-            shape.setAttribute("r", updatedRadius);
-        }
-    </script>
+    function scaleUp() {
+      let shape = document.querySelector("#circle_1");
+      let r = parseFloat(shape.getAttribute("r"));
+      let updatedRadius = r + 10;
+      shape.setAttribute("r", updatedRadius);
+    }
+  </script>
 </body>
 
 </html>
