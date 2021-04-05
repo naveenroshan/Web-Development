@@ -19,3 +19,12 @@ panned viewBox - "-50 -100 500 300"
 converting screen coordinaties (pixels) into SVG coordinates(Units) 
 This helps to maintain consistant svg canvas resolution across many screen resolution 
 
+Rotate: css tranform property with origin point
+
+move : css tranform: Translate property
+
+scale : css transform property with origin point centre for circle, eclipse and left top for others
+
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    transform: rotateY(515deg);
