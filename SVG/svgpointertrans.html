@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>SVG pointer mouse transform</h1>
+
+    <svg width="1000" height="500" style="border: 1px solid red">
+        <rect x="200" y="100" width="100" height="100" fill="yellow" stroke="black" stroke-width="5"
+            onclick="transformMe(evt)" />
+        <text x="40" y="250" font-family="Verdana" font-size="16" fill="green">
+            Click on a shape to transform it
+        </text>
+        <circle id="circle_1" cx="350" cy="150" r="40" stroke="green" stroke-width="4" fill="yellow"
+            onclick="transformMe(evt)" />
+    </svg>
+
+    <script type="text/javascript">
+        function transformMe(evt) {
+            console.log(evt.target)
+            // svg root element to access the createSVGTransform() function
+            var svgroot = evt.target.parentNode;
+            // SVGTransformList of the element that has been clicked on
+            var tfmList = evt.target.transform.baseVal;
+            console.log("before applying tranfromation ", tfmList.length);
+            // Create a separate transform object for each transform
+            var translate = svgroot.createSVGTransform();
+            translate.setTranslate(50, 5);
+            console.log(translate.type === SVGTransform.SVG_TRANSFORM_TRANSLATE);
+            console.log(translate.type === SVGTransform.SVG_TRANSFORM_ROTATE);
+            var rotate = svgroot.createSVGTransform();
+            rotate.setRotate(10, 0, 0);
+            var scale = svgroot.createSVGTransform();
+            scale.setScale(0.8, 0.8);
+            // apply the transformations by appending the SVGTransform objects to the 
+            //SVGTransformList associated with the element
+            tfmList.appendItem(translate);
+            tfmList.appendItem(rotate);
+            console.log("after applying rotate tranfromation ", tfmList.length);
+            tfmList.appendItem(scale);
+            console.log("after applying tranfromation ", tfmList.length);
+        }
+    </script>
+</body>
+
+</html>
