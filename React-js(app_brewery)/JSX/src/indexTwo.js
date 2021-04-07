@@ -11,8 +11,10 @@ const name = "ram"
 const number = new Date().getFullYear()
 ReactDom.render(
     <div>
-        <p>Created by {name}</p>
+        //inline styleing
+        <p style={{ color: "red" }}>Created by {name}</p>
         <p>Copyright {number}</p>
+        <img src="https://i.pinimg.com/originals/b6/c7/66/b6c766a55337a6549b39933a77560a4a.png"></img>
     </div>,
     document.getElementById("root")
 );
