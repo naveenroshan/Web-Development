@@ -2,24 +2,24 @@
 <html>
 <style type="text/css">
     .hideShape{
-        opacity:0.3;
+        opacity:1;
         transform:scale(0.2);
     }
     .moveFromBottomToTop{
-        opacity:0.1;
+        opacity:0;
         transform:translateY(100px);
     }
     
     .moveFromTopToBottom{
-        opacity:0.1;
+        opacity:0;
         transform:translateY(-100px);
     }
     .moveFromRigtToLeft{
-        opacity:0.1;
+        opacity:0;
         transform:translateX(-100px);
     }
     .moveFromLeftToRight{
-        opacity:0.1;
+        opacity:0;
         transform:translateX(100px);
     }
     .fromCenterShape{
@@ -35,35 +35,19 @@
   <button onclick="hideShape()">Hide Shape</button>
 </div>
   <svg width="1000" height="800" style="border: 1px solid red">
-    <circle class ="fromCenterShape hideShape" id="circle_1" cx="450" cy="400" r="50" stroke="green" 
-    stroke-width="4" fill="pink" onClick="revealShape()" />
-    <circle class ="fromCenterShape moveFromBottomToTop" id="circle_2" cx="100" cy="150" r="30" stroke="green"
+    <circle class ="fromCenterShape hideShape" id="circle_1" cx="450" cy="400" r="50" stroke="red" 
+    stroke-width="4" fill="pink" onClick="revealShape()" ondblclick="hideShape()" />
+    <circle class ="fromCenterShape moveFromBottomToTop" id="circle_2" cx="100" cy="150" r="30" stroke="red"
      stroke-width="4" fill="red" />
     <circle class ="fromCenterShape moveFromTopToBottom" id="circle_3" cx="250" cy="250" r="30"
-     stroke="green" stroke-width="4" fill="red" />
+     stroke="red" stroke-width="4" fill="red" />
      <circle class ="fromCenterShape moveFromRigtToLeft" id="circle_4" cx="650" cy="500" r="30"
-     stroke="green" stroke-width="4" fill="yellow" />
+     stroke="red" stroke-width="4" fill="yellow" />
      <circle class ="fromCenterShape moveFromLeftToRight" id="circle_5" cx="850" cy="600" r="30"
-     stroke="green" stroke-width="4" fill="black" />
+     stroke="red" stroke-width="4" fill="black" />
   </svg>
-   <br>
-  <!-- <button onclick="moveShape()">Move Shape</button>
-  <button onclick="scaleUp()">ScaleUp Shape</button> -->
   
-
   <script type="text/javascript">
-    // function moveShape() {
-    //   let shape = document.querySelector("#rectangle_1");
-    //   let x = parseFloat(shape.getAttribute("x"));
-    //   let newXPosition = x + 10;
-    //   shape.setAttribute("x", newXPosition);
-    // }
-    // function scaleUp() {
-    //   let shape = document.querySelector("#circle_1");
-    //   let r = parseFloat(shape.getAttribute("r"));
-    //   let updatedRadius = r + 10;
-    //   shape.setAttribute("r", updatedRadius);
-    // }
     function revealShape() {
       let shape1 = document.querySelector("#circle_1");
       shape1.classList.remove("hideShape");
