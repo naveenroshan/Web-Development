@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+    .hideShape{
+        opacity:0.3;
+        transform:scale(0.2);
+    }
+    .moveFromBottomToTop{
+        opacity:0.1;
+        transform:translateY(100px);
+    }
+    
+    .moveFromTopToBottom{
+        opacity:0.1;
+        transform:translateY(-100px);
+    }
+    .moveFromRigtToLeft{
+        opacity:0.1;
+        transform:translateX(-100px);
+    }
+    .moveFromLeftToRight{
+        opacity:0.1;
+        transform:translateX(100px);
+    }
+    .fromCenterShape{
+        transition:1s linear;
+        transform-box: fillbox;
+        transform-origin:50% 50%;
+    }
+</style>
+<body>
+<div>
+  <h1>Css shape transform</h1>
+  <button onclick="revealShape()" color= "green">Reveal Shape</button>
+  <button onclick="hideShape()">Hide Shape</button>
+</div>
+  <svg width="1000" height="800" style="border: 1px solid red">
+    <circle class ="fromCenterShape hideShape" id="circle_1" cx="450" cy="400" r="50" stroke="green" 
+    stroke-width="4" fill="pink" onClick="revealShape()" />
+    <circle class ="fromCenterShape moveFromBottomToTop" id="circle_2" cx="100" cy="150" r="30" stroke="green"
+     stroke-width="4" fill="red" />
+    <circle class ="fromCenterShape moveFromTopToBottom" id="circle_3" cx="250" cy="250" r="30"
+     stroke="green" stroke-width="4" fill="red" />
+     <circle class ="fromCenterShape moveFromRigtToLeft" id="circle_4" cx="650" cy="500" r="30"
+     stroke="green" stroke-width="4" fill="yellow" />
+     <circle class ="fromCenterShape moveFromLeftToRight" id="circle_5" cx="850" cy="600" r="30"
+     stroke="green" stroke-width="4" fill="black" />
+  </svg>
+   <br>
+  <!-- <button onclick="moveShape()">Move Shape</button>
+  <button onclick="scaleUp()">ScaleUp Shape</button> -->
+  
+
+  <script type="text/javascript">
+    // function moveShape() {
+    //   let shape = document.querySelector("#rectangle_1");
+    //   let x = parseFloat(shape.getAttribute("x"));
+    //   let newXPosition = x + 10;
+    //   shape.setAttribute("x", newXPosition);
+    // }
+    // function scaleUp() {
+    //   let shape = document.querySelector("#circle_1");
+    //   let r = parseFloat(shape.getAttribute("r"));
+    //   let updatedRadius = r + 10;
+    //   shape.setAttribute("r", updatedRadius);
+    // }
+    function revealShape() {
+      let shape1 = document.querySelector("#circle_1");
+      shape1.classList.remove("hideShape");
+      let shape2 = document.querySelector("#circle_2");
+      shape2.classList.remove("moveFromBottomToTop");
+      let shape3 = document.querySelector("#circle_3");
+      shape3.classList.remove("moveFromTopToBottom");   
+      let shape4 = document.querySelector("#circle_4");
+      shape4.classList.remove("moveFromRigtToLeft");   
+      let shape5 = document.querySelector("#circle_5");
+      shape5.classList.remove("moveFromLeftToRight");      
+    }
+     function hideShape() {
+       let shape1 = document.querySelector("#circle_1");
+      shape1.classList.add("hideShape");
+      let shape2 = document.querySelector("#circle_2");
+      shape2.classList.add("moveFromBottomToTop");
+      let shape3 = document.querySelector("#circle_3");
+      shape3.classList.add("moveFromTopToBottom");   
+      let shape4 = document.querySelector("#circle_4");
+      shape4.classList.add("moveFromRigtToLeft"); 
+      let shape5 = document.querySelector("#circle_5");
+      shape5.classList.add("moveFromLeftToRight");    
+    }
+  </script>
+</body>
+
+</html>
