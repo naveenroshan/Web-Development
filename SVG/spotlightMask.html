@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Spotlight Feature</title>
+    <style>
+    </style>
+</head>
+
+<body>
+
+    <button style="position:fixed;top:10px;right:50px" onclick="moveSpotlight()">Move</button>
+    <button style="position:fixed;top:10px;right:200px" onclick="initMouseMove()">Enable Mouse Move</button>
+
+    <svg id="svgCanvas" viewBox="0 0 220 220" style="background:#33333390;">
+        <defs>
+            <mask id="spotlight" x="0" y="0" width="100" height="100">
+                <rect x="0" y="0" width="220" height="220" fill="#0e0e0e"></rect>
+                <ellipse id="spotlight_ellipse" cx="50" cy="45" rx="25" ry="15"
+                    style="stroke:none; fill: #ffffff;cursor:pointer" />
+            </mask>
+        </defs>
+
+        <g id="scene" mask="url(#spotlight)">
+            <rect x="0" y="0" width="220" height="220" style="stroke: black;  fill: white" />
+            <text x="50" y="50" style="font-size:9px">
+                <tspan x="50" dy="10">You can do some amazing things with SVG masks. <tspan>
+                        <tspan x="50" dy="10">This technique has been around for years but only recently made its way
+                            into mainstream web development.<tspan>
+                                <tspan x="50" dy="10">
+                                    I’ve scoured the web to find the below demos of custom clipping masks & SVG/canvas
+                                    masks. <tspan>
+                                        <tspan x="50" dy="10">These examples show just how far you can push masks on the
+                                            web, and ultimately what they may offer developers going forward.<tspan>
+            </text>
+        </g>
+
+    </svg>
+
+    <script type="text/javascript">
+        function moveSpotlight() {
+            let existingCX = document.querySelector("#spotlight_ellipse").getAttribute("cx");
+            let newCX = parseFloat(existingCX) + 5;
+            document.querySelector("#spotlight_ellipse").setAttribute("cx", newCX);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            console.log(pt);
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            console.log(svgPoint);
+            console.log("------------");
+            return svgPoint;
+        }
+
+        function initMouseMove() {
+
+
+            let svgCanvas = document.querySelector("#svgCanvas");
+
+            svgCanvas.addEventListener("pointermove", handlePointerMove, true);
+
+        }
+
+        function handlePointerMove(evt) {
+            let x = evt.clientX;
+            let y = evt.clientY;
+
+            let convertedMousePoint = convertScreenPointToSVGPoint(x, y);
+
+            document.querySelector("#spotlight_ellipse").setAttribute("cx", convertedMousePoint.x);
+            document.querySelector("#spotlight_ellipse").setAttribute("cy", convertedMousePoint.y);
+        }
+    </script>
+
+</body>
+
+</html>

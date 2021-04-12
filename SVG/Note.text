@@ -35,3 +35,5 @@ SVGTransform
 SVGTransformList
 
 >svg shape transform with css
+
+>Masking the svg
