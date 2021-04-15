@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>rect drawn</h1>
+
+    <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red">
+    </svg>
+
+    <div id="rectDrawingStatus"></div>
+    <div id="rectStartingPoint">0,0</div>
+    <div id="rectEndingPoint">0,0</div>
+
+    <script type="text/javascript">
+        var rectStartingPoint = document.querySelector("#rectStartingPoint");
+        var rectEndingPoint = document.querySelector("#rectEndingPoint");
+        var rect = null;
+        var rectStartingPointCoordinates = {};
+        var rectEndingPointCoordinates = {};
+
+        //For RectStartingPoint
+        document.querySelector("#svgCanvas")
+            .addEventListener('mousedown', handleMouseDown, false);
+
+        function handleMouseDown(evt) {
+            document.querySelector("#rectDrawingStatus").innerHTML = "Rect drawing started ";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            rectStartingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            rectStartingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            let newRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            newRect.setAttribute('x', rectStartingPointCoordinates.x);
+            newRect.setAttribute('y', rectStartingPointCoordinates.y);
+            newRect.setAttribute('height', 0);
+            newRect.setAttribute('width', 0);
+            newRect.setAttribute("stroke", "black");
+            rect = newRect;
+            let svg = document.querySelector("#svgCanvas");
+            svg.append(newRect);
+
+            //For RectDrag
+            document.querySelector("#svgCanvas")
+                .addEventListener('mousemove', handleMouseMove, false);
+
+            //For RectEnding.
+            document.querySelector("#svgCanvas")
+                .addEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function handleMouseMove(evt) {
+            document.querySelector("#rectDrawingStatus").innerHTML = "Rect is being drawn..";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            rectEndingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            rectEndingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            
+            let w = rectEndingPointCoordinates.x - rectStartingPointCoordinates.x;
+            let h = rectEndingPointCoordinates.y - rectStartingPointCoordinates.y;
+            rect.setAttribute("width", w);
+            rect.setAttribute("height", h);
+        }
+
+        function handleMouseUp(evt) {
+            document.querySelector("#rectDrawingStatus").innerHTML = "Rect drawing complete.";
+            //   remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mousemove', handleMouseMove, false);
+
+            //remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            return svgPoint;
+        }
+    </script>
+</body>
+
+</html>

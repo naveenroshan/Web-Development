@@ -19,9 +19,9 @@ panned viewBox - "-50 -100 500 300"
 converting screen coordinaties (pixels) into SVG coordinates(Units) 
 This helps to maintain consistant svg canvas resolution across many screen resolution 
 
-Rotate: css tranform property with origin point
+>Rotate: css tranform property with origin point
 
-move : css tranform: Translate property
+>move : css tranform: Translate property
 
 scale : css transform property with origin point centre for circle, eclipse and left top for others
 
@@ -29,7 +29,7 @@ scale : css transform property with origin point centre for circle, eclipse and 
     transform-origin: 50% 50%;
     transform: rotateY(515deg);
 
->scg mouse pointer transfrom using :
+>svg mouse pointer transfrom using :
 SVGPoint
 SVGTransform
 SVGTransformList
@@ -37,3 +37,5 @@ SVGTransformList
 >svg shape transform with css
 
 >Masking the svg
+
+>drawing lines, circle, rectangle, eclipse using mouse in svg

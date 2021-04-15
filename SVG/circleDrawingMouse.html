@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>circle drawn</h1>
+
+    <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red">
+    </svg>
+
+    <div id="circleDrawingStatus"></div>
+    <div id="circleStartingPoint">0,0</div>
+    <div id="circleEndingPoint">0,0</div>
+
+    <script type="text/javascript">
+        var circleStartingPoint = document.querySelector("#circleStartingPoint");
+        var circleEndingPoint = document.querySelector("#circleEndingPoint");
+        var circle = null;
+        var circleStartingPointCoordinates = {};
+        var circleEndingPointCoordinates = {};
+
+        //For CircleStartingPoint
+        document.querySelector("#svgCanvas")
+            .addEventListener('mousedown', handleMouseDown, false);
+
+        function handleMouseDown(evt) {
+            document.querySelector("#circleDrawingStatus").innerHTML = "Circle drawing started ";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            circleStartingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            circleStartingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            let newCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            newCircle.setAttribute('cx', circleStartingPointCoordinates.x);
+            newCircle.setAttribute('cy', circleStartingPointCoordinates.y);
+            newCircle.setAttribute('r', 0);
+            newCircle.setAttribute("stroke", "black");
+            circle = newCircle;
+            let svg = document.querySelector("#svgCanvas");
+            svg.append(newCircle);
+
+            //For CircleDrag
+            document.querySelector("#svgCanvas")
+                .addEventListener('mousemove', handleMouseMove, false);
+
+            //For CircleEnding.
+            document.querySelector("#svgCanvas")
+                .addEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function handleMouseMove(evt) {
+            document.querySelector("#circleDrawingStatus").innerHTML = "Circle is being drawn..";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            circleEndingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            circleEndingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y //we not using using y for circle
+            };
+            // calculate the distance between current mouse pointer and coordinate at mouse down event
+            // consider this distance as radius 
+            let r = circleEndingPointCoordinates.x - circleStartingPointCoordinates.x;
+            circle.setAttribute("r", r);
+        }
+
+        function handleMouseUp(evt) {
+            document.querySelector("#circleDrawingStatus").innerHTML = "Circle drawing complete.";
+            //   remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mousemove', handleMouseMove, false);
+
+            //remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            return svgPoint;
+        }
+    </script>
+</body>
+
+</html>

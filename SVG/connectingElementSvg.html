@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>connecting elements</h1>
+
+    <svg id="svgid" width="500" height="200" style="border: 1px solid red">
+        <circle id="circle_1" cx="100" cy="100" r="40" stroke="green" stroke-width="4" fill="yellow" />
+        <circle id="circle_2" cx="300" cy="100" r="40" stroke="green" stroke-width="4" fill="pink" />
+    </svg>
+
+    <button onclick="connectElement()">Connect circles</button>
+
+    <script type="text/javascript">
+        function connectElement() {
+            let startingPoint = document.querySelector("#circle_1");
+            let spx = parseFloat(startingPoint.getAttribute("cx"));
+            let spy = parseFloat(startingPoint.getAttribute("cy"));
+            let endPoint = document.querySelector("#circle_2");
+            let epx = parseFloat(endPoint.getAttribute("cx"));
+            let epy = parseFloat(endPoint.getAttribute("cy"));
+            console.log(epx)
+            var newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            newLine.setAttribute('x1', spx);
+            newLine.setAttribute('y1', spy);
+            newLine.setAttribute('x2', epx);
+            newLine.setAttribute('y2', epy);
+            newLine.setAttribute("stroke", "black")
+            let svg = document.querySelector("#svgid");
+            svg.append(newLine);
+        }
+    </script>
+</body>
+
+</html>

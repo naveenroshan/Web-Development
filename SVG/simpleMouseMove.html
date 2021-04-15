@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>mouse movement element</h1>
+
+    <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red">
+        <circle id="circle_2" cx="300" cy="100" r="40" stroke="green" stroke-width="4" fill="pink" />
+    </svg>
+    <div id="svgCoordinates">0,0</div>
+
+    <script type="text/javascript">
+        var svgCoordinates = document.querySelector("#svgCoordinates");
+        document.querySelector("#svgCanvas")
+            .addEventListener('mousemove', handleMouseMove, false);
+
+        function handleMouseMove(evt) {
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            svgCoordinates.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            document.querySelector("#circle_2").setAttribute("cx", svgPoint.x);
+            document.querySelector("#circle_2").setAttribute("cy", svgPoint.y);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            console.log(pt);
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            console.log(svgPoint);
+            console.log("------------");
+            return svgPoint;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>line draw simple</h1>
+
+  <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red">
+  </svg>
+  <div id="lineStartingPoint">0,0</div>
+  <div id="lineEndingPoint">0,0</div>
+
+  <script type="text/javascript">
+    var lineStartingPoint = document.querySelector("#lineStartingPoint");
+    var lineEndingPoint = document.querySelector("#lineEndingPoint");
+    var line = null;
+    var lineStartingPointCoordinates = {};
+    var lineEndingPointCoordinates = {};
+
+    //For LineStartingPoint
+    document.querySelector("#svgCanvas")
+      .addEventListener('mousedown', handleMouseDown, false);
+
+    //For LineEnding.
+    document.querySelector("#svgCanvas")
+      .addEventListener('mouseup', handleMouseUp, false);
+
+
+    function handleMouseDown(evt) {
+      console.log(evt);
+      let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+      lineStartingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+      lineStartingPointCoordinates = {
+        x: svgPoint.x,
+        y: svgPoint.y
+      };
+    }
+
+    function handleMouseUp(evt) {
+      let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+      lineEndingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+      lineEndingPointCoordinates = {
+        x: svgPoint.x,
+        y: svgPoint.y
+      };
+      var newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      newLine.setAttribute('x1', lineStartingPointCoordinates.x);
+      newLine.setAttribute('y1', lineStartingPointCoordinates.y);
+      newLine.setAttribute('x2', lineEndingPointCoordinates.x);
+      newLine.setAttribute('y2', lineEndingPointCoordinates.y);
+      newLine.setAttribute("stroke", "black");
+      let svg = document.querySelector("#svgCanvas");
+      svg.append(newLine);
+    }
+
+    function convertScreenPointToSVGPoint(x, y) {
+      let svgCanvas = document.querySelector("#svgCanvas");
+      let pt = svgCanvas.createSVGPoint();
+      pt.x = x;
+      pt.y = y;
+      let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+      return svgPoint;
+    }
+  </script>
+</body>
+
+</html>

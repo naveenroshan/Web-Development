@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>ellipse drawn</h1>
+
+    <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red">
+    </svg>
+
+    <div id="ellipseDrawingStatus"></div>
+    <div id="ellipseStartingPoint">0,0</div>
+    <div id="ellipseEndingPoint">0,0</div>
+
+    <script type="text/javascript">
+        var ellipseStartingPoint = document.querySelector("#ellipseStartingPoint");
+        var ellipseEndingPoint = document.querySelector("#ellipseEndingPoint");
+        var ellipse = null;
+        var ellipseStartingPointCoordinates = {};
+        var ellipseEndingPointCoordinates = {};
+
+        //For EllipseStartingPoint
+        document.querySelector("#svgCanvas")
+            .addEventListener('mousedown', handleMouseDown, false);
+
+        function handleMouseDown(evt) {
+            document.querySelector("#ellipseDrawingStatus").innerHTML = "Ellipse drawing started ";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            ellipseStartingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            ellipseStartingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            let newEllipse = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+            newEllipse.setAttribute('cx', ellipseStartingPointCoordinates.x);
+            newEllipse.setAttribute('cy', ellipseStartingPointCoordinates.y);
+            newEllipse.setAttribute('rx', 0);
+            newEllipse.setAttribute('ry', 0);
+            newEllipse.setAttribute("stroke", "black");
+            ellipse = newEllipse;
+            let svg = document.querySelector("#svgCanvas");
+            svg.append(newEllipse);
+
+            //For EllipseDrag
+            document.querySelector("#svgCanvas")
+                .addEventListener('mousemove', handleMouseMove, false);
+
+            //For EllipseEnding.
+            document.querySelector("#svgCanvas")
+                .addEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function handleMouseMove(evt) {
+            document.querySelector("#ellipseDrawingStatus").innerHTML = "Ellipse is being drawn..";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            ellipseEndingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            ellipseEndingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            
+            let rx = ellipseEndingPointCoordinates.x - ellipseStartingPointCoordinates.x;
+            let ry = ellipseEndingPointCoordinates.y - ellipseStartingPointCoordinates.y;
+            ellipse.setAttribute("rx", rx);
+            ellipse.setAttribute("ry", ry);
+        }
+
+        function handleMouseUp(evt) {
+            document.querySelector("#ellipseDrawingStatus").innerHTML = "Ellipse drawing complete.";
+            //   remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mousemove', handleMouseMove, false);
+
+            //remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            return svgPoint;
+        }
+    </script>
+</body>
+
+</html>

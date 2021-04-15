@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>line drawn</h1>
+
+    <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red">
+    </svg>
+
+    <div id="lineDrawingStatus"></div>
+    <div id="lineStartingPoint">0,0</div>
+    <div id="lineEndingPoint">0,0</div>
+
+    <script type="text/javascript">
+        var lineStartingPoint = document.querySelector("#lineStartingPoint");
+        var lineEndingPoint = document.querySelector("#lineEndingPoint");
+        var line = null;
+        var lineStartingPointCoordinates = {};
+        var lineEndingPointCoordinates = {};
+
+        //For LineStartingPoint
+        document.querySelector("#svgCanvas")
+            .addEventListener('mousedown', handleMouseDown, false);
+
+        function handleMouseDown(evt) {
+            document.querySelector("#lineDrawingStatus").innerHTML = "Line drawing started ";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            lineStartingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            lineStartingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            let newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            newLine.setAttribute('x1', lineStartingPointCoordinates.x);
+            newLine.setAttribute('y1', lineStartingPointCoordinates.y);
+            newLine.setAttribute('x2', lineStartingPointCoordinates.x);
+            newLine.setAttribute('y2', lineStartingPointCoordinates.y);
+            newLine.setAttribute("stroke", "black");
+            line = newLine;
+            let svg = document.querySelector("#svgCanvas");
+            svg.append(newLine);
+            //For LineDrag
+            document.querySelector("#svgCanvas")
+                .addEventListener('mousemove', handleMouseMove, false);
+            //For LineEnding.
+            document.querySelector("#svgCanvas")
+                .addEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function handleMouseMove(evt) {
+            document.querySelector("#lineDrawingStatus").innerHTML = "Line is being drawn..";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            lineEndingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            lineEndingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            line.setAttribute('x2', lineEndingPointCoordinates.x);
+            line.setAttribute('y2', lineEndingPointCoordinates.y);
+        }
+
+        function handleMouseUp(evt) {
+            document.querySelector("#lineDrawingStatus").innerHTML = "Line drawing complete.";
+            //   remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mousemove', handleMouseMove, false);
+            //remove listener
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            return svgPoint;
+        }
+    </script>
+</body>
+
+</html>
