@@ -39,3 +39,5 @@ SVGTransformList
 >Masking the svg
 
 >drawing lines, circle, rectangle, eclipse using mouse in svg
+
+>panning a element in the svg

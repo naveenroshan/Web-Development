@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <h1>circle drawn</h1>
+    <div id="svgContainer">
+        <svg id="svgCanvas" width="500" height="200" style="border: 1px solid red ; width: 500px; height: 200px">
+            <!--<circle id="circle_1" cx="100" cy="100" r="40" stroke="green" stroke-width="4" fill="yellow" /> -->
+        </svg>
+    </div>
+    <div id="canvasContainer">
+        <canvas id="canvas" width="500" height="200" style="border: 1px solid red"></canvas>
+    </div>
+
+    <div id="circleDrawingStatus"></div>
+    <div id="circleStartingPoint">0,0</div>
+    <div id="circleEndingPoint">0,0</div>
+
+    <script type="text/javascript">
+        var circleStartingPoint = document.querySelector("#circleStartingPoint");
+        var circleEndingPoint = document.querySelector("#circleEndingPoint");
+        var circle = null;
+        var circleStartingPointCoordinates = {};
+        var circleEndingPointCoordinates = {};
+        document.querySelector("#svgCanvas")
+            .addEventListener('mousedown', handleMouseDown, false);
+
+        function handleMouseDown(evt) {
+            drawSvgToCanvas();
+            document.querySelector("#circleDrawingStatus").innerHTML = "Circle drawing started ";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            circleStartingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            circleStartingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            let newCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            newCircle.setAttribute('cx', circleStartingPointCoordinates.x);
+            newCircle.setAttribute('cy', circleStartingPointCoordinates.y);
+            newCircle.setAttribute('r', 0);
+            newCircle.setAttribute("stroke", "black");
+            circle = newCircle;
+            let svg = document.querySelector("#svgCanvas");
+            svg.append(newCircle);
+            document.querySelector("#svgCanvas")
+                .addEventListener('mousemove', handleMouseMove, false);
+            document.querySelector("#svgCanvas")
+                .addEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function handleMouseMove(evt) {
+            updateCanvas();
+            document.querySelector("#circleDrawingStatus").innerHTML = "Circle is being drawn..";
+            let svgPoint = convertScreenPointToSVGPoint(evt.clientX, evt.clientY);
+            circleEndingPoint.innerHTML = `${svgPoint.x.toFixed(0)},${svgPoint.y.toFixed(0)}`;
+            circleEndingPointCoordinates = {
+                x: svgPoint.x,
+                y: svgPoint.y
+            };
+            let r = circleEndingPointCoordinates.x - circleStartingPointCoordinates.x;
+            circle.setAttribute("r", r);
+        }
+
+        function handleMouseUp(evt) {
+            updateCanvas();
+            document.querySelector("#circleDrawingStatus").innerHTML = "Circle drawing complete.";
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mousemove', handleMouseMove, false);
+            document.querySelector("#svgCanvas")
+                .removeEventListener('mouseup', handleMouseUp, false);
+        }
+
+        function convertScreenPointToSVGPoint(x, y) {
+            let svgCanvas = document.querySelector("#svgCanvas");
+            let pt = svgCanvas.createSVGPoint();
+            pt.x = x;
+            pt.y = y;
+            let svgPoint = pt.matrixTransform(svgCanvas.getScreenCTM().inverse());
+            return svgPoint;
+        }
+
+        function drawSvgToCanvas() {
+            console.log("inside method")
+            //To find the width and height of the SVG
+            var svgElement = document.getElementById("svgCanvas");
+            let {
+                width,
+                height
+            } = svgElement.getBBox();
+            //To clone a node we can use cloneNode method
+            let clonedSvgElement = svgElement.cloneNode(true);
+            //Now we need to create a blob object from the cloned node
+            let outerHtml = clonedSvgElement.outerHtml,
+                blob = new Blob([outerHtml], {
+                    type: 'image/svg+xml; charset = uft-8'
+                });
+            //To create a URL from the blob Object
+            let URL = window.URL || window.webkitURL || window;
+            let blobURL = URL.createObjectURL(blob);
+            //We have a URL for the blob, now we need to load the blobURL to the image element
+            let image = new Image();
+            //image.src = "https://resize.hswstatic.com/w_828/gif/peacock-feathers.jpg" ;//blobURL;
+            console.log("blob URL", blobURL);
+            //image.src = blobURL;
+            image.onload = () => {
+                console.log("imageLoaded");
+                let canvas = document.getElementById("canvas");
+                canvas.width = width;
+                canvas.height = height;
+                let context = canvas.getContext("2d");
+                //draw svg image in the canvas starting from left-0, top-0
+                context.drawImage(image, 0, 0, width, height);
+            }
+            image.src = blobURL;
+        }
+
+        function updateCanvas() {
+            let canvasContainer = document.querySelector("#canvas");
+            html2canvas(document.querySelector("#svgContainer"), {
+                canvas: canvasContainer
+            }).then(canvas => {
+                //clearing the old canvas data when the image is drawn
+                //document.querySelector("#canvasContainer").innerHTML= "";
+                //finally we are adding the image to canvas while user is drawning
+                //document.querySelector("#canvasContainer").appendChild(canvas);
+            });
+        }
+    </script>
+</body>
+
+</html>
