@@ -12,9 +12,13 @@ app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
 mongoose
-.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
-.then(() =>  console.log( 'Database Connected' ))
-.catch(err => console.log(err));
+  .connect(uri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Database Connected'))
+  .catch(err => console.log(err));
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log(" ***** MongoDB database connection established successfully ****");
@@ -27,5 +31,5 @@ app.use('/exercises', exercisesRouter);
 app.use('/users', usersRouter);
 
 app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
