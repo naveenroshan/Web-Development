@@ -8,6 +8,4 @@ function Heading() {
     </ul>);
 }
 
-
-
 export default List;
