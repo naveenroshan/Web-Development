@@ -1,6 +1,6 @@
 import React from "react";
 
-function Heading() {
+function List() {
     return( <ul>
         <li>{number}</li>
         <li>{Math.random()}Tea</li>
