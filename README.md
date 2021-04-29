@@ -9,3 +9,8 @@ This repo contain all the web Technologies:
 - bootstrap
 - react-js
 - node-js
+
+# creating react app for local development
+- npx create-react-app my-app
+- cd my-app
+- npm start
