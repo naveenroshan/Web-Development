@@ -1,10 +1,12 @@
 import React from "react";
 
-function Note() {
-    return ( <div className="note">
-        <h1>Heading</h1> 
-        <p>Para</p>
-        </div>);
-    }
-    
-    export default Note;
+function Note(Props) {
+  return (
+    <div className="note">
+      <h1>{Props.title}</h1>
+      <p>{Props.content}</p>
+    </div>
+  );
+}
+
+export default Note;
