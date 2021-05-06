@@ -7,7 +7,7 @@ function App() {
     eMail: "",
   });
 
-  function updateDeatils() {
+  function updateDeatils(event) {
     const newValue = event.target.value;
     const inputName = event.target.name;
     setFullName((prevValue) => {
