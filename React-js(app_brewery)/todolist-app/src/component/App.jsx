@@ -1,36 +1,40 @@
 import React from "react";
+import TodoItem from "./TodoItem";
+import InputArea from "./InputArea";
 
 function App() {
-  //creating a string base value use state
-  const [inputText, setInputText] = React.useState("");
-  //creating a array  base value use state
+   //creating a array  base value use state
   const [items, setItems] = React.useState([]);
-
-  function updateDeatils(event) {
-    const newValue = event.target.value;
-    setInputText(newValue);
-  }
-  function addItem() {
+ 
+  function addItem(inputText) {
     setItems((prevItems) => {
       return [...prevItems, inputText];
     });
-    setInputText("");
+  }
+  function deleteItem(id) {
+    setItems((preValue) => {
+      //filtering the prevalue with list id which is clicked
+      //and set setvalue remainig list
+      return preValue.filter((item, index) => {
+        return index !== id;
+      });
+    });
   }
   return (
     <div className="container">
       <div className="heading">
         <h1>To-Do</h1>
       </div>
-      <div className="form">
-        <input type="text" onChange={updateDeatils} value={inputText} />
-        <button onClick={addItem}>
-          <span>Add</span>
-        </button>
-      </div>
+      <InputArea onAdd={addItem} />
       <div>
         <ul>
-          {items.map((todoItem) => (
-            <li>{todoItem}</li>
+          {items.map((todoItem, index) => (
+            <TodoItem
+              key={index}
+              id={index}
+              text={todoItem}
+              onChecked={deleteItem}
+            />
           ))}
         </ul>
       </div>
