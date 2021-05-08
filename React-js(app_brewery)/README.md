@@ -8,6 +8,8 @@
 - Event handing in react
 - react forms
 - managing component tree
+- material UI/Core
+- material-ui/icons
 # creating new react app
 - npx create-react-app my-app
 - cd my-app

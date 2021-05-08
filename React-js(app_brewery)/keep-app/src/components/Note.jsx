@@ -1,10 +1,16 @@
 import React from "react";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
-function Note(Props) {
+function Note(props) {
+  function handleClick() {
+    props.onDelete(props.id);
+  }
+
   return (
     <div className="note">
-      <h1>{Props.title}</h1>
-      <p>{Props.content}</p>
+      <h1>{props.title}</h1>
+      <p>{props.content}</p>
+      <button onClick={handleClick}><HighlightOffIcon/></button>
     </div>
   );
 }
