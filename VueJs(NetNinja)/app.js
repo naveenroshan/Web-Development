@@ -12,6 +12,11 @@ new Vue({
     age: 90,
     x: 0,
     y: 0,
+    name: "",
+    agee: "",
+    a: 0,
+    b: 0,
+    available:true
   },
   //creating a function for this instance
   methods: {
@@ -32,6 +37,29 @@ new Vue({
     updateXY: function (event) {
       this.x = event.offsetX;
       this.y = event.offsetY;
+    },
+
+    click: function () {
+      alert("you clicked the link");
+    },
+
+    logName: function () {
+      console.log("Name done");
+    },
+
+    logAge: function () {
+      console.log("Age done");
+    },
+  },
+
+  //computed properties kind of a methods
+  computed: {
+    modifyA: function () {
+      return this.a + this.age;
+    },
+
+    modifyB: function () {
+      return this.b + this.age;
     },
   },
 });

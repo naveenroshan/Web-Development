@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Js</title>
+    <link href="style.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="vue-app">
+      <h1>{{heading}}</h1>
+      <p>{{greet('People')}}</p>
+
+      <!--Data Binding for dynamic value-->
+      <a v-bind:href="GoogleLink">Google</a>
+      <input type="text" v-bind:value="inputBinding" />
+
+      <!--sending dynamic html tag -->
+      <p v-html="websiteTab"></p>
+
+      <!--Events in vue-->
+      <!--listening to the mouse click on the button-->
+      <button v-on:click="ageSub(1)">Subtract a year</button>
+
+      <!--listening to the mouse double click on the button-->
+      <button v-on:dblclick="ageAdd(10)">Add a year double click</button>
+      <button v-on:dblclick="ageSub(10)">Subtract a year double click</button>
+
+      <!--Event modifier-->
+      <button v-on:click.once="ageAdd(1)">click only onces ADD year</button>
+      <p>My age is {{age}}</p>
+      <a v-on:click.prevent="click" href="https://google.com">Prevent Google</a>
+
+      <!--Keyboard Event listener-->
+      <div>
+        <h1>Keyboard Event</h1>
+        <label>Name:</label>
+        <input type="text" v-on:keyup.enter="logName" />
+        <label>Age:</label>
+        <input type="text" v-on:keyup.alt.enter="logAge" />
+      </div>
+
+      <!--listening to the mouse movement on the button-->
+      <br />
+      <div id="canvas" v-on:mousemove="updateXY">{{x}},{{y}}</div>
+      <br />
+
+      <!--Two way Data Binding-->
+      <div>
+        <h1>Keyboard Event Two way Data Binding</h1>
+        <label>Name:</label>
+        <input type="text" v-model="name" />
+        <span>{{name}}</span>
+        <label>Age:</label>
+        <input type="text" v-model="agee" />
+        <span>{{agee}}</span>
+      </div>
+
+      <!--Computed Properties-->
+      <div>
+        <h1>Computed Properties</h1>
+        <button v-on:click="a++">Add to A</button>
+        <button v-on:click="b++">Add to B</button>
+        <p>A- {{a}}</p>
+        <p>B- {{b}}</p>
+        <p>Age + A = {{modifyA}}</p>
+        <p>Age + B = {{modifyB}}</p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

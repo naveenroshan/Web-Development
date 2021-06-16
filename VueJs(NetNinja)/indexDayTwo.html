@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Js</title>
+    <link href="styleDayTwo.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="vue-app">
+      <!--Dynamic Css by using the html class-->
+      <div>
+        <h1>Dynamic Css</h1>
+        <h2>Example 1</h2>
+        <div
+          v-on:click="available=!available"
+          v-bind:class="{available:available}"
+        >
+          <span>Button</span>
+        </div>
+        <!--Dynamic Css by using the html class with computed properties-->
+        <h2>Example 2</h2>
+        <button v-on:click="nearby=!nearby">Add nearby</button>
+        <button v-on:click="availableTwo=!availableTwo">Toggle available</button>
+        <!--using the computed properties-->
+        <div v-bind:class="addClassToDivElement">
+          <span>Button</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="appDayTwo.js"></script>
+  </body>
+</html>
