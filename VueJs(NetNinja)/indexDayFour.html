@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Js</title>
+    <link href="styleDayTwo.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  </head>
+  <body>
+    <!--Component-->
+    <h3>Component</h3>
+    <div id="vue-app-one">
+      <h2>Vue app one</h2>
+      <greeting></greeting>
+    </div>
+
+    <div id="vue-app-two">
+      <h2>Vue app two</h2>
+      <greeting></greeting>
+      <!--creating refernce in the html to access it from app.js-->
+      <input type="text" ref="input" />
+      <button v-on:click="readRefs">Submit</button>
+      <p>{{refValue}}</p>
+    </div>
+
+    <script src="appDayFour.js"></script>
+  </body>
+</html>
