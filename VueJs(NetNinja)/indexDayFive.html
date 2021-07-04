@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vue Js</title>
+    <link href="styleDayFive.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="vue-app">
+      <!--Input Binding-->
+      <div id="add-blog">
+        <h2>Add a New Blog Post</h2>
+        <form action="">
+          <label>Blog Title</label>
+          <!--input data binding with lazy funtion-->
+          <input type="text" v-model.lazy="blog.title" required />
+          <label>Blog Content</label>
+          <!--input data binding with lazy funtion-->
+          <textarea v-model.lazy="blog.content"></textarea>
+          <!--check box binding funtion-->
+          <div id="checkboxes">
+            <label for="">Ninjas</label>
+            <input type="checkbox" value="Ninjas" v-model="blog.categories" />
+            <label for="">Wizards</label>
+            <input type="checkbox" value="Wizards" v-model="blog.categories" />
+            <label for="">Marios</label>
+            <input type="checkbox" value="Marios" v-model="blog.categories" />
+            <label for="">Cheese</label>
+            <input type="checkbox" value="Cheese" v-model="blog.categories" />
+          </div>
+          <!--select box binding funtion-->
+          <div>
+            <label> Author: </label>
+            <select v-model="blog.author">
+              <option v-for="author in authors">{{author}}</option>
+            </select>
+          </div>
+        </form>
+        <div id="preview">
+          <h3>Preview blog</h3>
+          <!--input data binding with lazy funtion-->
+          <p>Blog title : {{blog.title}}</p>
+          <p>Blog content:</p>
+          <!--input data binding with lazy funtion-->
+          <p>{{blog.content}}</p>
+          <!--check box binding funtion-->
+          <p>Categories:</p>
+          <p v-for="category in blog.categories">{{category}}</p>
+          <!--select box binding funtion-->
+          <p>Author: {{blog.author}}</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="appDayFive.js"></script>
+  </body>
+</html>
