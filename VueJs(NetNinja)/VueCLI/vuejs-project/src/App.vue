@@ -27,7 +27,10 @@
     <app-footer v-bind:title="title"></app-footer>
 
     <app-footer v-bind:titleEventbus="titleEventbus"></app-footer>
+    
+    <router-view></router-view>
   </div>
+
 </template>
 
 <script>
