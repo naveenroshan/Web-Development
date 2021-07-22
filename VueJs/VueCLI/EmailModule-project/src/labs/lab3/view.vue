@@ -19,7 +19,7 @@ export default {
   },
   methods: {},
   created() {
-    bus.$on("SelectedEmail", (data) => {
+    bus.$on("selectedEmail", (data) => {
       this.currentlySelectedEmail = data;
     });
   },

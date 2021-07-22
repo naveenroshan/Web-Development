@@ -2,11 +2,12 @@
 
 This repo contain all the web Technologies:
 
-- Full stack projects.
+- Full stack
 - HTML
 - CSS
 - JavaScript
-- bootstrap
-- react-js
-- node-js
+- Bootstrap
+- React-js
+- Node-js
+- vue-js
 

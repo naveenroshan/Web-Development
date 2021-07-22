@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import EmailList from "./EmailList.vue"
-import EmailView from "./EmailView.vue";
+import EmailList from "./list.vue"
+import EmailView from "./view.vue";
 
 export default {
   components: {

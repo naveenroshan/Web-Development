@@ -18,13 +18,13 @@ export default {
   props: ["emails"],
   data() {
     return {
-      SelectedEmail: {},
+      selectedEmail: {},
     };
   },
   //creating a function for this instance
   methods: {
     setCurrentlySelectedEmail(email) {
-      bus.$emit("SelectedEmail", email);
+      bus.$emit("selectedEmail", email);
     },
   },
 };

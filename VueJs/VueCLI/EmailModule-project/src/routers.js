@@ -1,17 +1,22 @@
-import emailDisplay from './labs/lab1/EmailDisplay.vue';
-import emailHome from './labs/lab2/EmailHome.vue';
-import emailHomeEventBus from './labs/lab3/EmailHome.vue';
+import lab1Home from './labs/lab1/home.vue';
+import lab2Home from './labs/lab2/home.vue';
+import lab3Home from './labs/lab3/home.vue';
+import lab4Home from './labs/lab4/home.vue';
 
 export default [{
   path: '/lab1',
-  component: emailDisplay
+  component: lab1Home
 },
 {
   path: '/lab2',
-  component: emailHome
+  component: lab2Home
 },
 {
   path: '/lab3',
-  component: emailHomeEventBus
+  component: lab3Home
+},
+{
+  path: '/lab4',
+  component: lab4Home
 }
 ]
