@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--Email Body-->
-    <div class="grid-child green">
+    <div class="grid-child">
       <h2>Email Details</h2>
       <p>{{ currentlySelectedEmail.title }}</p>
     </div>
@@ -18,4 +18,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

@@ -1,3 +1,11 @@
-Lab Two urls
-list = 
+Lab 1 urls
+list = /lab1
+view = /lab1/home.vue
+
+Lab 2 urls
+list = /lab2
+view = /lab2/home.vue
+
+Lab 3 urls
+list =
 view =

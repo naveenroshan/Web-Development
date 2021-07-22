@@ -1,6 +1,6 @@
 <template>
   <!--Email list-->
-  <div class="grid-child purple">
+  <div class="grid-child">
     <h1>Email List</h1>
     <ul>
       <li v-for="email in emails">
@@ -31,4 +31,7 @@ export default {
 </script>
 
 <style scoped>
+.grid-child{
+  background-color: purple;
+}
 </style>

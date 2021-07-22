@@ -1,19 +1,22 @@
 <template>
-  <div>
-    <!--<email-display></email-display>-->
-    <email-home></email-home>
-  </div>
+<div>
+  <router-view></router-view>
+  <!--<email-display></email-display>
+  <email-home></email-home>
+  <email-homeThree></email-homeThree>-->
+</div>
 </template>
 
 <script>
-//import EmailDisplay from "../Labs/labOne/EmailDisplay.vue";
-import EmailHome from "./Labs/labTwo/EmailHome.vue"
+import EmailDisplay from "./labs/lab1/EmailDisplay.vue";
+import EmailHome from "./labs/lab2/EmailHome.vue";
+import EmailHomeThree from "./labs/lab3/EmailHome.vue"
 
 export default {
-  //defining the component in the main app component
   components: {
-    //"email-display": EmailDisplay,
+    "email-display": EmailDisplay,
     "email-home": EmailHome,
+    "email-homeThree" : EmailHomeThree
   },
   data() {
     return {};

@@ -2,11 +2,11 @@
   <div>
     <div class="grid-container">
       <!--Email list-->
-      <email-list v-bind:emails= "emails" v-on:SelectedEmail ="updateEmailView($event)"></email-list>
+      <email-list v-bind:emails= "emails" v-on:SelectedEmail = "updateEmailView($event)"></email-list>
 
       <!--Email Body-->
       <email-view
-        v-bind:currentlySelectedEmail= "currentlySelectedEmail"
+        v-bind:currentlySelectedEmail = "currentlySelectedEmail"
       ></email-view>
     </div>
   </div>
@@ -49,8 +49,9 @@ export default {
 
 <style scoped>
 .grid-container {
+  background-color: white;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 10fr 10fr;
   grid-gap: 20px;
 }
 </style>
