@@ -1,32 +1,30 @@
 <template>
-<!--Email list-->
-<div class="grid-child">
-  <h1>Email List</h1>
-  <ul>
-    <li v-for="email in emails">
-      <button v-on:click="setCurrentlySelectedEmail(email)">
-        {{ email.id }}
-      </button>
-    </li>
-  </ul>
-</div>
+  <!--Email list-->
+  <div class="grid-child">
+    <h1>Email List</h1>
+    <ul>
+      <li v-for="email in emails">
+        <button v-on:click="setCurrentlySelectedEmail(email)">
+          {{ email.id }}
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import {
-  bus
-} from "../main";
+import { bus } from '../../main';
 export default {
-  props: ['emails'],
+  props: ["emails"],
   data() {
     return {
-      SelectedEmail: {}
-    }
+      SelectedEmail: {},
+    };
   },
   //creating a function for this instance
   methods: {
     setCurrentlySelectedEmail(email) {
-      bus.$emit('SelectedEmail', email)
+      bus.$emit("SelectedEmail", email);
     },
   },
 };
@@ -34,6 +32,6 @@ export default {
 
 <style scoped>
 .grid-child {
-  background-color: purple;
+  background-color: rgb(95, 93, 209);
 }
 </style>
