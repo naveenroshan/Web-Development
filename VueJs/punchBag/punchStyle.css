@@ -1,27 +1,32 @@
-#bag{
+#bag {
     width: 200px;
     height: 500px;
-    margin:0 auto;
+    margin: 0 auto;
     background: url(./bag.png) center no-repeat;
     background-size: 80%;
 }
 
-#bag.burst{
+#bag.burst {
     background: url(./bag-burst.png) center no-repeat;
     background-size: 80%;
 }
 
-#bag-health{
-    width:200px;
-    border:1px #000;
-    margin:0 auto 20px auto;
+#bag-health {
+    width: 200px;
+    border: 1px #000;
+    margin: 0 auto 20px auto;
 }
 
-#bag-health div{
+#bag-health div {
     height: 20px;
     background: crimson;
 }
 
-#controls{
-    margin:0 auto;
+.controls {
+    margin: 0;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }

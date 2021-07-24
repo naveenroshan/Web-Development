@@ -4,21 +4,20 @@ new Vue({
     el: "#vue-app",
     //storing all the data for this instance which is object form
     data: {
-     health:100,
-     ended:false
+        health: 100,
+        ended: false
     },
 
-    methods:{
-        punch: function(){
+    methods: {
+        punch: function () {
             this.health -= 5;
-            if(this.health <= 0){
+            if (this.health <= 0) {
                 this.ended = true;
             }
         },
-        restart: function(){
+        restart: function () {
             this.health = 100;
             this.ended = false;
         }
     }
-  });
-  
+});
