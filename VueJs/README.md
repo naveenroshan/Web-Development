@@ -27,6 +27,7 @@
 - Check box Binding
 - Select Box Binding
 - Setting up Routing
+- jqplot graph plug
 
 ## Build Setup
 

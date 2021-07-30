@@ -1,16 +1,18 @@
 <template>
   <div class="grid-child">
-    <div>
-      <h1>Ram</h1>
-      <ul>
-        <li>{{ refValue }}</li>
-        <li>{{ currentlySelectedEmail }}</li>
-      </ul>
+    <h1>Ram</h1>
+    <div class="container">
+      <template v-for="msg in listOfMessages">
+        <p>{{ msg}}</p>
+      </template>
+    </div>
+    <div class="container dark">
+      <p>{{ currentlySelectedEmail }}</p>
     </div>
     <div class="text">
       <form>
-        <input type="text" ref="input" />
-        <button v-on:click= "readRefs">Enter</button>
+        <input type="text" v-model="chatInput" />
+        <button v-on:click="sendChatMessage">Enter</button>
       </form>
     </div>
   </div>
@@ -22,20 +24,23 @@ import { bus } from "../../main";
 export default {
   data() {
     return {
-      refValue: "",
+      listOfMessages: [],
+      chatInput: "",
       currentlySelectedEmail: "",
     };
   },
 
   methods: {
-    readRefs: function () {
-      var m = this.$refs.input.value;
-      this.refValue = m;
-      bus.$emit("ValueOne", this.refValue);
+    sendChatMessage: function () {
+      //var m = this.$refs.input.value;
+      //this.chatInput = m;
+      this.listOfMessages.push(this.chatInput);
+      bus.$emit("ValueOne", this.chatInput);
+      this.chatInput = "";
     },
   },
 
-  created() {
+  mounted() {
     bus.$on("ValueTwo", (data) => {
       this.currentlySelectedEmail = data;
     });
@@ -45,6 +50,49 @@ export default {
 
 <style scoped>
 .grid-child {
-  background-color: rgb(208, 208, 209);
+  background-color: burlywood;
+  border-radius: 30px;
+  padding: 20px;
+  margin: 100px 0;
+}
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 20px 0;
+  width: 50%;
+}
+
+p{
+  background-color: bisque;
+  margin-bottom: 10px;
+}
+.dark {
+  border: #ccc;
+  background-color: rgb(121, 230, 117);
+  margin-left: 300px;
+}
+
+input {
+  margin: auto;
+  border: 2px solid #dedede;
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+button {
+  background-color: cadetblue;
+  border: orangered;
+  padding: 10px;
+  margin: 10px 2px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+h1 {
+  color: rgb(13, 27, 153);
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

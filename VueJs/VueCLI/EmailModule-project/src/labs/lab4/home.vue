@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <div class="grid-container">
       <chat-one></chat-one>
       <chat-two></chat-two>
@@ -26,9 +26,10 @@ export default {
 
 <style scoped>
 .grid-container {
-  background-color: white;
+  background-color: rgb(141, 147, 233);
   display: grid;
   grid-template-columns: 10fr 10fr;
   grid-gap: 20px;
+  margin: 100px 0;
 }
 </style>
