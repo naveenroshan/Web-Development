@@ -46,6 +46,7 @@
 export default {
   data() {
     return {
+      numberOfRows:1,
       //metadata for forms
       configurationArray: [
         {

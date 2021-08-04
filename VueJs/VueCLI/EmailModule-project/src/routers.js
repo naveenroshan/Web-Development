@@ -4,6 +4,7 @@ import lab3Home from './labs/lab3/home.vue';
 import lab4Home from './labs/lab4/home.vue';
 import lab5Home from './labs/lab5/home.vue';
 import lab6Home from './labs/lab6/home.vue';
+import lab7Home from './labs/lab7/home.vue';
 
 export default [{
   path: '/lab1',
@@ -28,5 +29,9 @@ export default [{
 {
   path: '/lab6',
   component: lab6Home
+},
+{
+  path: '/lab7',
+  component: lab7Home
 }
 ]
