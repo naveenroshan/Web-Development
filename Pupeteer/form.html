@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Daily Journal</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h2>Forms</h2>
+    <form onsubmit="return false">
+      <label for="fname">Input</label><br />
+      <input type="text" id="inputFile" /><br />
+      <label for="lname">Output</label><br />
+      <input type="text" id="outputFile" /><br /><br />
+      <button onclick="generatePdf()">GeneratePdf</button>
+    </form>
+    <script type="text/javascript">
+      function generatePdf() {
+        const data = {
+          inputFileName: document.getElementById("inputFile").value,
+          outputFileName: document.getElementById("outputFile").value
+        };
+        fetch("http://localhost:3000/generate/pdf", {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
