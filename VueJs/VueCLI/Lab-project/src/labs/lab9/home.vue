@@ -1,28 +1,66 @@
 <template>
   <div class="app-con">
-    <div>
-      <button xclass="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" type="button"
-        v-on:click.stop="openContextMenu($event)">Click Me!</button>
+    <div class="button">
+      <ul style="list-style: none;">
+        <li>
+          <button xclass="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" type="button"
+            v-on:click.stop="openContextMenu($event)">
+            Click Me!
+          </button>
+        </li>
+        <br />
+        <br />
+        <li>
+          <button xclass="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" type="button"
+            v-on:click.stop="openContextMenu($event)">
+            Click Me!
+          </button>
+        </li>
+        <br />
+        <br />
+        <li>
+          <button xclass="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" type="button"
+            v-on:click.stop="openContextMenu($event)">
+            Click Me!
+          </button>
+        </li>
+        <br />
+        <br />
+        <li>
+          <button xclass="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" type="button"
+            v-on:click.stop="openContextMenu($event)">
+            Click Me!
+          </button>
+        </li>
+        <br />
+        <br />
+        <li>
+          <button xclass="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" type="button"
+            v-on:click.stop="openContextMenu($event)">
+            Click Me!
+          </button>
+        </li>
+      </ul>
     </div>
 
     <div id="ctx_menu" class="context-menu">
-      <div style="user-select: none;display: flex;gap: 0px;flex-direction: column;">
-        <div id="menu_container" class="menu_container">
-          <div id="menu_slider" class="menu_slider">
-            <div id="menu" class="menu menu_fixed_height">
-              <div>
-                <span style="padding-left: 20%;">TaskOne</span>
-              </div>
-              <div>
-                <span style="padding-left: 20%; padding-top: 50px;">TaskTwo</span>
-              </div>
-              <div>
-                <span style="padding-left: 20%; padding-top: 50px;">TaskThree</span>
-              </div>
+      <!-- <div style="user-select: none;display: flex;gap: 0px;flex-direction: column;"> -->
+      <div id="menu_container" class="menu_container">
+        <div id="menu_slider" class="menu_slider">
+          <div id="menu" class="menu menu_fixed_height">
+            <div>
+              <span style="padding-left: 20%;">TaskOne</span>
+            </div>
+            <div>
+              <span style="padding-left: 20%; padding-top: 50px;">TaskTwo</span>
+            </div>
+            <div>
+              <span style="padding-left: 20%; padding-top: 50px;">TaskThree</span>
             </div>
           </div>
         </div>
       </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -35,16 +73,24 @@
 
     methods: {
       openContextMenu(evt) {
-        document.getElementById("ctx_menu").style.top = '10px';
-        if (!document.getElementById("ctx_menu").classList.contains('opened')) {
+        document.getElementById("ctx_menu").style.top = "20px";
+        if (!document.getElementById("ctx_menu").classList.contains("opened")) {
           // document.getElementById("ctx_menu_" + msgId).style.display = "grid";
-          document.getElementById("ctx_menu").style.transform = 'scale(1)';
-          document.getElementById("ctx_menu").classList.add('opened');
+          document.getElementById("ctx_menu").style.transform = "scale(1)";
+          document.getElementById("ctx_menu").classList.add("opened");
         } else {
           // document.getElementById("ctx_menu_" + msgId).style.display = "none";
           document.getElementById("ctx_menu").style.transform = null;
-          document.getElementById("ctx_menu").classList.remove('opened');
+          document.getElementById("ctx_menu").classList.remove("opened");
         }
+        console.log(evt);
+        const contextMenu = document.querySelector("#ctx_menu");
+        const position = {
+          x: evt.clientX,
+          y: evt.clientY + 10
+        };
+        contextMenu.style.left = position.x - 0 + "px";
+        contextMenu.style.top = position.y + "px";
       }
     }
   };
@@ -58,7 +104,7 @@
 
   .updateTaskInfoTrigger {
     background: rgb(243 243 243);
-    border-radius: 50%;
+    border-radius: 5%;
     padding: 3px;
     cursor: pointer;
     line-height: 0px;
@@ -71,9 +117,10 @@
   .opened {
     opacity: 1;
   }
+
   .context-menu {
     display: none;
-    position: relative;
+    position: absolute;
     right: 0px;
     top: 10px;
     background-color: #ffffff;
@@ -83,7 +130,6 @@
     padding: 10px;
     z-index: 2;
     color: #6b6b6b;
-
     display: grid;
     right: 0px;
     transform-origin: left top;
@@ -93,8 +139,8 @@
     min-width: 20px;
     font-size: 0.75rem;
     box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px 0px;
+    width: 200px;
   }
-
 
   .context-menu>div>div {
     padding: 5px;
