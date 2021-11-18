@@ -98,29 +98,13 @@
 </script>
 
 <style scoped>
-  .scaleZero {
-    transform: scale(0);
-  }
-
-  .updateTaskInfoTrigger {
-    background: rgb(243 243 243);
-    border-radius: 5%;
-    padding: 3px;
-    cursor: pointer;
-    line-height: 0px;
-  }
-
-  .updateTaskInfoTrigger:hover {
-    background: #e4e4e4;
-  }
-
   .opened {
     opacity: 1;
   }
 
   .context-menu {
     display: none;
-    position: absolute;
+    position: fixed;
     right: 0px;
     top: 10px;
     background-color: #ffffff;
@@ -141,65 +125,12 @@
     box-shadow: rgb(0 0 0 / 12%) 0px 2px 12px 0px;
     width: 200px;
   }
-
-  .context-menu>div>div {
-    padding: 5px;
-    border-radius: 1px;
-  }
-
-  /* Context sliding menu */
-
   .menu_container {
     position: relative;
     width: 200px;
     height: 200px;
     box-sizing: border-box;
     overflow-x: hidden;
-  }
-
-  .menu_slider {
-    position: absolute;
-    display: flex;
-    flex-direction: row;
-    left: 0px;
-    transition: 0.25s linear;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .menu {
-    xbackground: yellow;
-    display: flex;
-    flex-direction: column;
-    min-width: 100%;
-    border: 0px solid red;
-    box-sizing: border-box;
-  }
-
-  .submenu {
-    xbackground: greenyellow;
-    display: flex;
-    flex-direction: column;
-    min-width: 100%;
-    border: 0px solid black;
-    box-sizing: border-box;
-    padding-top: 10px;
-  }
-
-  .menu_fixed_height {
-    height: 250px;
-    overflow-y: auto;
-  }
-
-  .submenu_container {
-    display: flex;
-    flex-direction: column;
-    min-width: 100%;
-  }
-
-  .submenu_category {
-    display: flex;
-    flex-direction: column;
   }
 
   .menu>div,
