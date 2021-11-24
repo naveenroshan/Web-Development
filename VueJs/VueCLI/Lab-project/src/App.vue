@@ -11,6 +11,7 @@ import EmailHomeThree from "./labs/lab3/home.vue";
 import ChatHome from "./labs/lab4/home.vue";
 import Jplot from "./labs/lab5/home.vue";
 import Contextmenu from "./labs/lab9/home.vue";
+import ChartJS from "./labs/lab10/home.vue";
 
 export default {
   components: {
@@ -19,7 +20,8 @@ export default {
     "email-homeThree": EmailHomeThree,
     "chat-home": ChatHome,
     "jq-plot": Jplot,
-    "context-menu": Contextmenu
+    "context-menu": Contextmenu,
+    "chart-js": ChartJS
   },
   data() {
     return {};
